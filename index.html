@@ -468,6 +468,7 @@ html,body{height:100%;font-family:var(--font-b);background:var(--bg);color:var(-
     <button class="sbb" data-page="ambient"><span class="ic">🌿</span>Ambiances</button>
     <button class="sbb" data-page="recorder"><span class="ic">🎙️</span>Studio</button>
     <button class="sbb" data-page="creations"><span class="ic">✨</span>Créations<span class="sb-badge" id="bdg-crea">0</span></button>
+    <button class="sbb" data-page="mix"><span class="ic">🎛️</span>Éditeur Mix</button>
     <div class="sb-sec">Autre</div>
     <button class="sbb" data-page="stats"><span class="ic">📊</span>Statistiques</button>
     <button class="sbb" data-page="settings"><span class="ic">⚙️</span>Paramètres</button>
@@ -480,6 +481,7 @@ html,body{height:100%;font-family:var(--font-b);background:var(--bg);color:var(-
       <button class="bnb" data-page="ambient"><span class="b-ic">🌿</span><span class="b-lb">Ambiance</span></button>
       <button class="bnb" data-page="recorder"><span class="b-ic">🎙️</span><span class="b-lb">Studio</span></button>
       <button class="bnb" data-page="creations"><span class="b-ic">✨</span><span class="b-lb">Créations</span></button>
+      <button class="bnb" data-page="mix"><span class="b-ic">🎛️</span><span class="b-lb">Mix</span></button>
       <button class="bnb" data-page="stats"><span class="b-ic">📊</span><span class="b-lb">Stats</span></button>
       <button class="bnb" data-page="settings"><span class="b-ic">⚙️</span><span class="b-lb">Réglages</span></button>
     </div>
@@ -525,29 +527,60 @@ html,body{height:100%;font-family:var(--font-b);background:var(--bg);color:var(-
         <button class="ctab" data-cat="other">Autre</button>
       </div>
       <div class="cards" id="lib-grid"></div>
+    </div>
 
-      <!-- MIX EDITOR -->
-      <div class="mix-section">
-        <div class="ph" style="margin-bottom:14px">
-          <div><div class="pt" style="font-size:clamp(20px,4vw,28px)">🎛️ Éditeur Mix</div><div class="ps">Combinez pistes, sons et créations</div></div>
-          <button class="btn-pri" style="font-size:12px;padding:8px 14px" onclick="openMixPicker()">+ Ajouter</button>
+
+    <!-- MIX EDITOR PAGE -->
+    <div class="page" id="page-mix">
+      <div class="ph">
+        <div><div class="pt">Éditeur Mix</div><div class="ps">Combinez vos pistes comme CapCut</div></div>
+        <button class="btn-pri" style="font-size:12.5px;padding:9px 16px" onclick="openMixPicker()">+ Ajouter une piste</button>
+      </div>
+
+      <!-- Empty state -->
+      <div id="mix-empty-zone" class="mix-empty-zone" onclick="openMixPicker()">
+        <div style="font-size:52px;margin-bottom:14px">🎛️</div>
+        <div style="font-weight:700;font-size:16px;margin-bottom:8px">Créez votre premier mix</div>
+        <div style="font-size:13px;color:var(--tx3);line-height:1.7">Combinez plusieurs musiques, créations et ambiances<br/>pour les écouter simultanément — comme CapCut pour l'audio</div>
+        <div style="margin-top:18px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+          <span style="background:var(--sf2);border-radius:100px;padding:5px 12px;font-size:12px;color:var(--tx2)">🏠 Pistes locales</span>
+          <span style="background:var(--sf2);border-radius:100px;padding:5px 12px;font-size:12px;color:var(--tx2)">☁️ Pistes cloud</span>
+          <span style="background:var(--sf2);border-radius:100px;padding:5px 12px;font-size:12px;color:var(--tx2)">🌿 Ambiances</span>
         </div>
-        <div id="mix-empty-zone" class="mix-empty-zone" onclick="openMixPicker()">
-          <div style="font-size:42px;margin-bottom:12px">🎛️</div>
-          <div style="font-weight:600;font-size:15px;margin-bottom:6px">Créer un mix</div>
-          <div style="font-size:12.5px;color:var(--tx3)">Ajoutez vos musiques, ambiances et créations</div>
-        </div>
-        <div id="mix-editor-wrap" style="display:none">
-          <div class="mix-timeline" id="mix-timeline"></div>
-          <div class="mix-actions">
-            <button class="btn-pri" onclick="openMixPicker()" style="font-size:12.5px;padding:8px 14px">+ Piste</button>
-            <button class="btn-sec" id="mix-play-btn" onclick="playMix()" style="font-size:12.5px;padding:8px 14px">▶ Écouter</button>
-            <button onclick="clearMix()" style="background:none;border:1px solid rgba(255,107,138,.3);color:var(--dn);padding:8px 14px;border-radius:100px;font-size:12.5px;cursor:pointer;font-family:var(--font-b)">🗑 Vider</button>
+      </div>
+
+      <!-- Editor (shown when tracks added) -->
+      <div id="mix-editor-wrap" style="display:none">
+
+        <!-- Timeline tracks -->
+        <div style="font-family:var(--font-d);font-size:19px;font-weight:300;margin-bottom:14px">Pistes du mix</div>
+        <div class="mix-timeline" id="mix-timeline"></div>
+
+        <!-- Canvas preview -->
+        <div class="mix-canvas-wrap" style="margin-bottom:16px">
+          <h4>Visualisation</h4>
+          <canvas id="mix-canvas"></canvas>
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--tx3);margin-top:6px">
+            <span id="mix-n-tracks">0 piste</span>
+            <span id="mix-status">Prêt</span>
           </div>
-          <div class="mix-canvas-wrap"><h4>Aperçu des pistes</h4><canvas id="mix-canvas"></canvas><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--tx3);margin-top:6px"><span id="mix-n-tracks">0 piste</span><span id="mix-status">Prêt</span></div></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="mix-actions">
+          <button class="btn-pri" onclick="openMixPicker()" style="font-size:13px;padding:10px 18px">+ Piste</button>
+          <button class="btn-sec" id="mix-play-btn" onclick="playMix()" style="font-size:13px;padding:10px 18px">▶ Écouter le mix</button>
+          <button onclick="exportMixHint()" style="background:none;border:1px solid var(--bd2);color:var(--tx);padding:10px 18px;border-radius:100px;font-size:13px;cursor:pointer;font-family:var(--font-b);transition:all var(--tr)">💾 Exporter</button>
+          <button onclick="clearMix()" style="background:none;border:1px solid rgba(255,107,138,.3);color:var(--dn);padding:10px 18px;border-radius:100px;font-size:13px;cursor:pointer;font-family:var(--font-b)">🗑 Vider</button>
+        </div>
+
+        <!-- Tips -->
+        <div style="margin-top:20px;background:rgba(124,109,250,.07);border:1px solid rgba(124,109,250,.15);border-radius:12px;padding:14px;font-size:12.5px;color:var(--tx2);line-height:1.7">
+          💡 <strong>Astuce :</strong> Ajustez le volume de chaque piste indépendamment. Toutes les pistes jouent simultanément. Pour enregistrer le mix, utilisez le <strong>Studio</strong> pendant la lecture.
         </div>
       </div>
     </div>
+
 
     <!-- FAVORITES -->
     <div class="page" id="page-favorites">
@@ -994,6 +1027,7 @@ function goPage(page){
   if(page==='stats')renderStats();
   if(page==='ambient'){renderAmbient();renderAmbMixBar();}
   if(page==='recorder')renderMixTracks();
+  if(page==='mix'){renderMixTimeline();drawMixCanvas();}
   window.scrollTo({top:0,behavior:'smooth'});
 }
 document.querySelectorAll('.sbb[data-page],.bnb[data-page]').forEach(b=>b.onclick=()=>goPage(b.dataset.page));
@@ -1373,7 +1407,11 @@ function renderMixTracks(){
 }
 
 // ═══════════ MIX EDITOR ═══════════
-function openMixPicker(){renderMPList(mpCat);openModal('mix-picker-modal');}
+function openMixPicker(){
+  // If not on mix page, navigate there first
+  if(!document.getElementById('page-mix').classList.contains('active'))goPage('mix');
+  renderMPList(mpCat);openModal('mix-picker-modal');
+}
 document.getElementById('mp-cats').addEventListener('click',e=>{
   const t=e.target.closest('.ctab');if(!t)return;
   mpCat=t.dataset.cat;document.querySelectorAll('#mp-cats .ctab').forEach(x=>x.classList.remove('active'));t.classList.add('active');renderMPList(mpCat);
@@ -1449,6 +1487,7 @@ function playMix(){
   document.getElementById('mix-status').textContent='Lecture...';toast('Mix en lecture','ok');
 }
 function stopMix(){mixNodes.forEach(n=>{try{n.audio.pause();}catch(e){}});mixNodes=[];if(mixCtx2){try{mixCtx2.close();}catch(e){}mixCtx2=null;}mixPlaying=false;const btn=document.getElementById('mix-play-btn');if(btn){btn.textContent='▶ Écouter';btn.onclick=playMix;}document.getElementById('mix-status').textContent='Prêt';}
+function exportMixHint(){toast('Lisez le mix puis enregistrez depuis le Studio 🎙️','info');}
 function clearMix(){if(!confirm('Vider le mix ?'))return;stopMix();mixTracks=[];renderMixTimeline();drawMixCanvas();document.getElementById('mix-empty-zone').style.display='block';document.getElementById('mix-editor-wrap').style.display='none';toast('Mix vidé','ok');}
 
 // ═══════════ STATS ═══════════
