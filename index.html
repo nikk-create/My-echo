@@ -6,7 +6,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <title>Beyma Flow</title>
-<meta name="theme-color" content="#090b14"/>
+<meta name="theme-color" content="#7c6dfa"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icon-192.png"/>
+<meta name="apple-mobile-web-app-title" content="Beyma Flow"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <link rel="manifest" href="./manifest.json"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
@@ -1596,11 +1600,9 @@ function renderMixTracks(){
 // MIX STUDIO — CapCut style
 // ═══════════════════════════════════════════════════
 const MIX_COLORS = ['#7c6dfa','#3fa9d4','#5dbe7a','#c8944a','#ff6b8a','#6bffc8','#f0a050','#a060e0'];
-// mixTracks is already declared at the top
 mixTracks = [];        // {id, name, artist, category, audioData, audioUrl, coverData, coverUrl, isCloud, isAmb, ambId, vol, startSec, durationSec, color, mixId}
 mixPlaying = false;
 let mixAudioNodes = [];    // {audio, gainNode, timer}
-mixCtx2 = null;
 let mixMasterGain = null;
 let mixCursorPos = 0;      // seconds
 let mixCursorAF = null;
