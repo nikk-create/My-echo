@@ -1,0 +1,39 @@
+{
+  "name": "Beyma Flow",
+  "short_name": "Beyma Flow",
+  "description": "Ta plateforme musicale personnelle — bibliothèque, mix, découverte",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#090b14",
+  "theme_color": "#090b14",
+  "orientation": "any",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%23090b14'/><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%237c6dfa'/><stop offset='1' stop-color='%233d30b8'/></linearGradient></defs><rect width='512' height='512' rx='100' fill='url(%23g)' opacity='.3'/><text x='256' y='340' font-size='260' text-anchor='middle'>🎵</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%23090b14'/><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%237c6dfa'/><stop offset='1' stop-color='%233d30b8'/></linearGradient></defs><rect width='192' height='192' rx='40' fill='url(%23g)' opacity='.3'/><text x='96' y='128' font-size='92' text-anchor='middle'>🎵</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [],
+  "categories": ["music", "entertainment"],
+  "shortcuts": [
+    {
+      "name": "Bibliothèque",
+      "url": "./#library",
+      "description": "Accéder à ma bibliothèque"
+    },
+    {
+      "name": "Découvrir",
+      "url": "./#discover",
+      "description": "Découvrir de la musique"
+    }
+  ]
+}

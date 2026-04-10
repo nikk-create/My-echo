@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <title>Beyma Flow</title>
 <meta name="theme-color" content="#090b14"/>
+<link rel="manifest" href="./manifest.json"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <!-- Firebase -->
@@ -413,6 +414,35 @@ html,body{height:100%;font-family:var(--font-b);background:var(--bg);color:var(-
   .cards{grid-template-columns:repeat(2,1fr)!important;gap:8px!important}
   .pt{font-size:21px!important}
 }
+
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+/* JAMENDO CARDS */
+.jm-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;transition:all var(--tr);position:relative}
+.jm-card:hover{transform:translateY(-2px);border-color:var(--bd2);box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.jm-card-cov{width:100%;padding-top:100%;position:relative;background:var(--bg3);overflow:hidden;cursor:pointer}
+.jm-card-cov img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.jm-card-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:38px}
+.jm-card-ov{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity var(--tr)}
+.jm-card:hover .jm-card-ov{opacity:1}
+.jm-card-play{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;font-size:18px;color:#111}
+.jm-card-info{padding:11px}
+.jm-card-info h4{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jm-card-info p{font-size:11px;color:var(--tx2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jm-card-info .jm-dur{font-size:10.5px;color:var(--tx3);margin-top:1px}
+.jm-card-actions{display:flex;gap:4px;padding:0 11px 11px}
+.jmb{flex:1;padding:6px 4px;border-radius:8px;border:1px solid var(--bd2);background:none;color:var(--tx2);cursor:pointer;font-family:var(--font-b);font-size:11px;transition:all var(--tr);text-align:center}
+.jmb:hover{border-color:var(--ac);color:var(--ac2)}
+.jmb.pri{background:linear-gradient(135deg,var(--ac),var(--ac3));border-color:transparent;color:#fff}
+.jm-track-row{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--sf);border:1px solid var(--bd);border-radius:11px;transition:all var(--tr);cursor:pointer}
+.jm-track-row:hover{border-color:var(--bd2);transform:translateX(3px)}
+.jm-track-cov{width:46px;height:46px;border-radius:9px;background:var(--bg3);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:20px}
+.jm-track-cov img{width:100%;height:100%;object-fit:cover}
+.jm-track-info{flex:1;min-width:0}
+.jm-track-nm{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jm-track-art{font-size:11.5px;color:var(--tx2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.jm-track-art:hover{color:var(--ac2);text-decoration:underline}
+.jm-track-dur{font-size:11px;color:var(--tx3);flex-shrink:0}
+.jm-track-btns{display:flex;gap:5px;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -464,6 +494,7 @@ html,body{height:100%;font-family:var(--font-b);background:var(--bg);color:var(-
 
   <aside class="sidebar">
     <div class="sb-sec">Musique</div>
+    <button class="sbb" data-page="discover" onclick="goPage('discover')"><span class="ic">🔍</span>Découvrir</button>
     <button class="sbb active" data-page="library"><span class="ic">🎵</span>Bibliothèque<span class="sb-badge" id="bdg-lib">0</span></button>
     <button class="sbb" data-page="favorites"><span class="ic">⭐</span>Favoris<span class="sb-badge" id="bdg-fav">0</span></button>
     <div class="sb-sec">Créer</div>
@@ -478,6 +509,7 @@ html,body{height:100%;font-family:var(--font-b);background:var(--bg);color:var(-
 
   <nav class="bot-nav">
     <div class="bot-nav-inner">
+      <button class="bnb" data-page="discover" onclick="goPage('discover')"><span class="b-ic">🔍</span><span class="b-lb">Découvrir</span></button>
       <button class="bnb active" data-page="library"><span class="b-ic">🎵</span><span class="b-lb">Musique</span></button>
       <button class="bnb" data-page="favorites"><span class="b-ic">⭐</span><span class="b-lb">Favoris</span></button>
       <button class="bnb" data-page="ambient"><span class="b-ic">🌿</span><span class="b-lb">Ambiance</span></button>
@@ -490,6 +522,65 @@ html,body{height:100%;font-family:var(--font-b);background:var(--bg);color:var(-
   </nav>
 
   <main class="main">
+
+    <!-- DISCOVER PAGE -->
+    <div class="page" id="page-discover">
+      <div class="ph">
+        <div><div class="pt">Découvrir</div><div class="ps">Recherchez et ajoutez de la musique via Jamendo</div></div>
+      </div>
+
+      <!-- SEARCH BAR -->
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="srch" style="flex:1;margin:0;min-width:200px">
+          <span class="si">🔍</span>
+          <input type="text" id="jm-search" placeholder="Artiste, titre, genre... (ex: Afrobeat, Phonk, Jul...)"
+            oninput="jmSearchDebounce(this.value)"
+            onkeydown="if(event.key==='Enter')jmSearch(document.getElementById('jm-search').value)"/>
+        </div>
+        <button class="btn-pri" onclick="jmSearch(document.getElementById('jm-search').value)" style="flex-shrink:0">Rechercher</button>
+      </div>
+
+      <!-- QUICK GENRE FILTERS -->
+      <div class="ctabs" id="jm-genres" style="margin-bottom:18px">
+        <button class="ctab active" onclick="jmSearchGenre('')">Tout</button>
+        <button class="ctab" onclick="jmSearchGenre('afrobeat')">Afrobeat</button>
+        <button class="ctab" onclick="jmSearchGenre('hip-hop')">Hip-Hop</button>
+        <button class="ctab" onclick="jmSearchGenre('lounge')">Lo-Fi</button>
+        <button class="ctab" onclick="jmSearchGenre('electronic')">Electronic</button>
+        <button class="ctab" onclick="jmSearchGenre('pop')">Pop</button>
+        <button class="ctab" onclick="jmSearchGenre('jazz')">Jazz</button>
+        <button class="ctab" onclick="jmSearchGenre('ambient')">Ambient</button>
+        <button class="ctab" onclick="jmSearchGenre('rock')">Rock</button>
+        <button class="ctab" onclick="jmSearchGenre('classical')">Classique</button>
+      </div>
+
+      <!-- SEARCH TYPE TABS -->
+      <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
+        <button class="ctab active" id="jm-type-tracks" onclick="setJmType('tracks')">🎵 Titres</button>
+        <button class="ctab" id="jm-type-artists" onclick="setJmType('artists')">🎤 Artistes</button>
+        <button class="ctab" id="jm-type-albums" onclick="setJmType('albums')">💿 Albums</button>
+      </div>
+
+      <!-- STATUS -->
+      <div id="jm-status" style="text-align:center;color:var(--tx3);font-size:13px;padding:12px 0;display:none"></div>
+      <div id="jm-loading" style="display:none;text-align:center;padding:32px">
+        <div style="width:36px;height:36px;border:3px solid var(--bd2);border-top-color:var(--ac);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div>
+        <div style="font-size:13px;color:var(--tx3)">Recherche en cours...</div>
+      </div>
+
+      <!-- RESULTS -->
+      <div id="jm-results"></div>
+
+      <!-- ARTIST PAGE -->
+      <div id="jm-artist-page" style="display:none">
+        <button onclick="closeArtistPage()" style="display:flex;align-items:center;gap:7px;background:none;border:none;color:var(--ac2);cursor:pointer;font-family:var(--font-b);font-size:13px;margin-bottom:16px;padding:0">
+          ← Retour aux résultats
+        </button>
+        <div id="jm-artist-header" style="display:flex;align-items:center;gap:16px;margin-bottom:22px;padding:16px;background:var(--sf);border-radius:16px;border:1px solid var(--bd)"></div>
+        <div style="font-family:var(--font-d);font-size:20px;font-weight:300;margin-bottom:14px" id="jm-artist-tracks-title">Titres</div>
+        <div id="jm-artist-tracks"></div>
+      </div>
+    </div>
 
     <!-- LIBRARY -->
     <div class="page active" id="page-library">
@@ -535,56 +626,74 @@ html,body{height:100%;font-family:var(--font-b);background:var(--bg);color:var(-
     <!-- MIX EDITOR PAGE -->
     <div class="page" id="page-mix">
       <div class="ph">
-        <div><div class="pt">Éditeur Mix</div><div class="ps">Combinez vos pistes comme CapCut</div></div>
-        <button class="btn-pri" style="font-size:12.5px;padding:9px 16px" onclick="openMixPicker()">+ Ajouter une piste</button>
+        <div><div class="pt">Mix Studio</div><div class="ps">Assemblez vos pistes comme CapCut</div></div>
+        <button class="btn-pri" onclick="newMixProject()" style="font-size:12.5px;padding:9px 16px">+ Nouveau projet</button>
       </div>
 
-      <!-- Empty state -->
-      <div id="mix-empty-zone" class="mix-empty-zone" onclick="openMixPicker()">
-        <div style="font-size:52px;margin-bottom:14px">🎛️</div>
-        <div style="font-weight:700;font-size:16px;margin-bottom:8px">Créez votre premier mix</div>
-        <div style="font-size:13px;color:var(--tx3);line-height:1.7">Combinez plusieurs musiques, créations et ambiances<br/>pour les écouter simultanément — comme CapCut pour l'audio</div>
-        <div style="margin-top:18px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-          <span style="background:var(--sf2);border-radius:100px;padding:5px 12px;font-size:12px;color:var(--tx2)">🏠 Pistes locales</span>
-          <span style="background:var(--sf2);border-radius:100px;padding:5px 12px;font-size:12px;color:var(--tx2)">☁️ Pistes cloud</span>
-          <span style="background:var(--sf2);border-radius:100px;padding:5px 12px;font-size:12px;color:var(--tx2)">🌿 Ambiances</span>
+      <!-- PROJECT PANEL -->
+      <div id="mix-project-panel" style="background:var(--bg2);border:1px solid var(--bd2);border-radius:16px;padding:20px;margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+          <span style="font-size:22px">🎛️</span>
+          <input id="mix-project-name" value="Nouveau projet" style="font-size:18px;font-weight:600;background:none;border:none;color:var(--tx);font-family:var(--font-b);outline:none;flex:1;cursor:text" onfocus="this.style.borderBottom='1px solid var(--ac)'" onblur="this.style.borderBottom='none'"/>
         </div>
-      </div>
+        <div style="font-size:12px;color:var(--tx3);margin-bottom:18px">Ajoutez des pistes audio, créations ou sons d'ambiance puis exportez votre mix</div>
 
-      <!-- Editor (shown when tracks added) -->
-      <div id="mix-editor-wrap" style="display:none">
+        <!-- ADD BUTTONS -->
+        <div style="font-size:10px;color:var(--tx3);letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:10px">Ajouter une piste</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+          <button onclick="openMixPickerType('library')" style="display:flex;align-items:center;gap:7px;padding:9px 16px;background:var(--sf);border:1px solid var(--bd2);border-radius:10px;color:var(--tx);font-family:var(--font-b);font-size:13px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--ac)'" onmouseout="this.style.borderColor='var(--bd2)'">🎵 Depuis bibliothèque</button>
+          <button onclick="openMixPickerType('creation')" style="display:flex;align-items:center;gap:7px;padding:9px 16px;background:var(--sf);border:1px solid var(--bd2);border-radius:10px;color:var(--tx);font-family:var(--font-b);font-size:13px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--ac)'" onmouseout="this.style.borderColor='var(--bd2)'">✨ Depuis créations</button>
+          <button onclick="openMixPickerType('ambient')" style="display:flex;align-items:center;gap:7px;padding:9px 16px;background:var(--sf);border:1px solid var(--bd2);border-radius:10px;color:var(--tx);font-family:var(--font-b);font-size:13px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--ac)'" onmouseout="this.style.borderColor='var(--bd2)'">🌿 Son d'ambiance</button>
+        </div>
 
-        <!-- Timeline tracks -->
-        <div style="font-family:var(--font-d);font-size:19px;font-weight:300;margin-bottom:14px">Pistes du mix</div>
-        <div class="mix-timeline" id="mix-timeline"></div>
-
-        <!-- Canvas preview -->
-        <div class="mix-canvas-wrap" style="margin-bottom:16px">
-          <h4>Visualisation</h4>
-          <canvas id="mix-canvas"></canvas>
-          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--tx3);margin-top:6px">
-            <span id="mix-n-tracks">0 piste</span>
-            <span id="mix-status">Prêt</span>
+        <!-- TIMELINE -->
+        <div style="font-size:10px;color:var(--tx3);letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:8px">Timeline</div>
+        <div id="mix-timeline-wrap" style="background:var(--bg3);border-radius:12px;overflow:hidden;border:1px solid var(--bd)">
+          <!-- Ruler -->
+          <div id="mix-ruler" style="display:flex;border-bottom:1px solid var(--bd);padding:0 0 0 120px;height:28px;position:relative;overflow:hidden;background:var(--bg2)"></div>
+          <!-- Playhead -->
+          <div id="mix-playhead" style="position:absolute;top:28px;left:120px;width:2px;background:var(--ac);z-index:10;pointer-events:none;display:none;box-shadow:0 0 6px var(--ac)"></div>
+          <!-- Tracks area -->
+          <div id="mix-tracks-area" style="position:relative;min-height:120px;padding:8px 0">
+            <div id="mix-empty-msg" style="display:flex;align-items:center;justify-content:center;height:100px;color:var(--tx3);font-size:13px">Ajoutez des pistes pour commencer</div>
           </div>
         </div>
 
-        <!-- Controls -->
-        <div class="mix-actions">
-          <button class="btn-pri" onclick="openMixPicker()" style="font-size:13px;padding:10px 18px">+ Piste</button>
-          <button class="btn-sec" id="mix-play-btn" onclick="playMix()" style="font-size:13px;padding:10px 18px">▶ Écouter le mix</button>
-          <button onclick="exportMixHint()" style="background:none;border:1px solid var(--bd2);color:var(--tx);padding:10px 18px;border-radius:100px;font-size:13px;cursor:pointer;font-family:var(--font-b);transition:all var(--tr)">💾 Exporter</button>
-          <button onclick="clearMix()" style="background:none;border:1px solid rgba(255,107,138,.3);color:var(--dn);padding:10px 18px;border-radius:100px;font-size:13px;cursor:pointer;font-family:var(--font-b)">🗑 Vider</button>
+        <!-- TRANSPORT -->
+        <div style="display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap">
+          <button id="mix-play-btn" onclick="toggleMixPlay()" style="display:flex;align-items:center;gap:7px;padding:10px 20px;background:linear-gradient(135deg,var(--ac),var(--ac3));border:none;border-radius:100px;color:#fff;font-family:var(--font-b);font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 3px 14px var(--glow)">▶ Jouer</button>
+          <button onclick="stopMixPlay()" style="display:flex;align-items:center;gap:7px;padding:10px 18px;background:none;border:1px solid var(--bd2);border-radius:100px;color:var(--tx);font-family:var(--font-b);font-size:13px;cursor:pointer">⏹ Stop</button>
+          <button onclick="clearMix()" style="display:flex;align-items:center;gap:7px;padding:10px 18px;background:none;border:1px solid rgba(255,107,138,.3);border-radius:100px;color:var(--dn);font-family:var(--font-b);font-size:13px;cursor:pointer">🗑 Vider</button>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+            <span style="font-size:12px;color:var(--tx3)">Vol. master</span>
+            <input type="range" id="mix-master-vol" min="0" max="1" step=".01" value="1" oninput="setMixMasterVol(this.value)" style="width:80px;accent-color:var(--ac)"/>
+          </div>
         </div>
 
-        <!-- Tips -->
-        <div style="margin-top:20px;background:rgba(124,109,250,.07);border:1px solid rgba(124,109,250,.15);border-radius:12px;padding:14px;font-size:12.5px;color:var(--tx2);line-height:1.7">
-          💡 <strong>Astuce :</strong> Ajustez le volume de chaque piste indépendamment. Toutes les pistes jouent simultanément. Pour enregistrer le mix, utilisez le <strong>Studio</strong> pendant la lecture.
+        <!-- PISTES AJOUTÉES (détail) -->
+        <div style="margin-top:20px">
+          <div style="font-size:10px;color:var(--tx3);letter-spacing:1px;text-transform:uppercase;font-weight:600;margin-bottom:10px">Pistes ajoutées</div>
+          <div id="mix-track-list" style="display:flex;flex-direction:column;gap:8px">
+            <div style="color:var(--tx3);font-size:13px;text-align:center;padding:14px" id="mix-notrack-msg">Aucune piste ajoutée</div>
+          </div>
+        </div>
+
+        <!-- EXPORT TIP -->
+        <div style="margin-top:16px;background:rgba(107,255,200,.06);border:1px solid rgba(107,255,200,.15);border-radius:10px;padding:12px;font-size:12px;color:var(--tx2);display:flex;align-items:center;gap:9px">
+          <span style="font-size:18px">🎧</span>
+          <span>Jouez votre mix en temps réel et enregistrez le résultat via le <strong>Studio</strong></span>
+        </div>
+      </div>
+
+      <!-- SAVED PROJECTS -->
+      <div>
+        <div style="font-family:var(--font-d);font-size:22px;font-weight:300;margin-bottom:14px">Projets</div>
+        <div id="mix-saved-projects" style="display:flex;flex-direction:column;gap:8px">
+          <div style="color:var(--tx3);font-size:13px;text-align:center;padding:14px">Aucun projet sauvegardé</div>
         </div>
       </div>
     </div>
 
-
-    <!-- FAVORITES -->
     <div class="page" id="page-favorites">
       <div class="ph"><div><div class="pt">Favoris</div><div class="ps">Vos pistes préférées</div></div></div>
       <div class="cards" id="fav-grid"></div>
@@ -878,7 +987,6 @@ const USERS={user1:{name:'Utilisateur 1',avClass:'u1',icon:'👑'},user2:{name:'
 const FB_CFG={apiKey:"AIzaSyDBFkMliveBZdXX7ce24SmsB0h1QqdYHGk",authDomain:"beyma-flow.firebaseapp.com",databaseURL:"https://beyma-flow-default-rtdb.firebaseio.com",projectId:"beyma-flow",storageBucket:"beyma-flow.firebasestorage.app",messagingSenderId:"812703479592",appId:"1:812703479592:web:3413493def8139ca1a821d"};
 const CAT_ICON={music:'🎵',voice:'🎙️',creation:'✨',cloud:'☁️',other:'📁'};
 const CAT_LBL={music:'Musique',voice:'Voix',creation:'Création',cloud:'Cloud',other:'Autre'};
-const MIX_COLORS=['#7c6dfa','#3fa9d4','#5dbe7a','#c8944a','#ff6b8a','#6bffc8'];
 function ci(c){return CAT_ICON[c]||'📁'}
 function cl(c){return CAT_LBL[c]||c}
 
@@ -1049,6 +1157,7 @@ function goPage(page){
   if(page==='stats')renderStats();
   if(page==='ambient'){renderAmbient();renderAmbMixBar();}
   if(page==='recorder')renderMixTracks();
+  if(page==='discover'){if(!document.getElementById('jm-results').innerHTML)jmFeatured();}
   if(page==='mix'){renderMixTimeline();drawMixCanvas();}
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -1483,89 +1592,451 @@ function renderMixTracks(){
   w.innerHTML=active.map(s=>`<div class="mtrack"><div class="mt-ic">${s.icon}</div><div class="mt-info"><div class="mt-nm">${s.name}</div><div class="mt-vrow"><input type="range" min="0" max="1" step=".01" value="${activeAmb[s.id].vol}" oninput="setAmbVol('${s.id}',this.value);this.nextElementSibling.textContent=Math.round(this.value*100)+'%'"/><span>${Math.round(activeAmb[s.id].vol*100)}%</span></div></div><button class="mtrm" onclick="toggleAmb('${s.id}')">✕</button></div>`).join('');
 }
 
-// ═══════════ MIX EDITOR ═══════════
-function openMixPicker(){
-  // If not on mix page, navigate there first
-  if(!document.getElementById('page-mix').classList.contains('active'))goPage('mix');
-  renderMPList(mpCat);openModal('mix-picker-modal');
+// ═══════════════════════════════════════════════════
+// MIX STUDIO — CapCut style
+// ═══════════════════════════════════════════════════
+const MIX_COLORS = ['#7c6dfa','#3fa9d4','#5dbe7a','#c8944a','#ff6b8a','#6bffc8','#f0a050','#a060e0'];
+// mixTracks is already declared at the top
+mixTracks = [];        // {id, name, artist, category, audioData, audioUrl, coverData, coverUrl, isCloud, isAmb, ambId, vol, startSec, durationSec, color, mixId}
+mixPlaying = false;
+let mixAudioNodes = [];    // {audio, gainNode, timer}
+mixCtx2 = null;
+let mixMasterGain = null;
+let mixCursorPos = 0;      // seconds
+let mixCursorAF = null;
+let mixStartTime = 0;      // AudioContext time when playback started
+let mixDuration = 60;      // total timeline seconds
+let mpFilterCat = 'all';
+let mixIdCounter = 0;
+
+const TRACK_H = 52;        // px height per track row
+const TIMELINE_LEFT = 120; // px for track label area
+const PX_PER_SEC = 12;     // pixels per second on timeline
+
+function newMixProject() {
+  if (mixTracks.length && !confirm('Vider le projet actuel ?')) return;
+  clearMix();
+  document.getElementById('mix-project-name').value = 'Nouveau projet';
 }
-document.getElementById('mp-cats').addEventListener('click',e=>{
-  const t=e.target.closest('.ctab');if(!t)return;
-  mpCat=t.dataset.cat;document.querySelectorAll('#mp-cats .ctab').forEach(x=>x.classList.remove('active'));t.classList.add('active');renderMPList(mpCat);
+
+// ── Open picker by type ──
+function openMixPickerType(type) {
+  mpFilterCat = type;
+  document.querySelectorAll('#mp-cats .ctab').forEach(b => b.classList.toggle('active', b.dataset.cat === type));
+  renderMPList(type);
+  openModal('mix-picker-modal');
+}
+document.getElementById('mp-cats').addEventListener('click', e => {
+  const t = e.target.closest('.ctab'); if (!t) return;
+  mpFilterCat = t.dataset.cat;
+  document.querySelectorAll('#mp-cats .ctab').forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  renderMPList(mpFilterCat);
 });
-function renderMPList(cat){
-  const list=document.getElementById('mp-list');
-  let items=myTracks;
-  if(cat!=='all')items=items.filter(t=>t.category===cat||(cat==='cloud'&&t.isCloud));
-  if(!items.length){list.innerHTML='<div style="text-align:center;color:var(--tx3);padding:20px;font-size:13px">Aucune piste</div>';return;}
-  list.innerHTML=items.map(t=>`<div onclick="addToMix('${t.fbKey||t.id}');closeModal('mix-picker-modal')" style="display:flex;align-items:center;gap:11px;padding:11px 13px;background:var(--bg3);border-radius:10px;cursor:pointer;border:1px solid transparent;transition:all .2s" onmouseover="this.style.borderColor='var(--ac)'" onmouseout="this.style.borderColor='transparent'">
-    <div style="width:42px;height:42px;border-radius:9px;background:var(--sf2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden">${(t.coverData||t.coverUrl)?`<img src="${t.coverData||t.coverUrl}" style="width:100%;height:100%;object-fit:cover"/>`:ci(t.category)}</div>
-    <div style="overflow:hidden;flex:1"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.name}</div><div style="font-size:11px;color:var(--tx3);margin-top:2px">${t.artist||cl(t.category)} ${t.isCloud?'· ☁️':''}</div></div>
-    <div style="font-size:11px;color:var(--ac2);flex-shrink:0">+ Mix</div>
-  </div>`).join('');
-}
-function addToMix(key){
-  const track=myTracks.find(t=>String(t.id)===String(key)||t.fbKey===String(key));
-  if(!track)return;
-  if(mixTracks.find(m=>String(m.id)===String(key)||m.fbKey===String(key))){toast('Déjà dans le mix','info');return;}
-  mixTracks.push({...track,vol:.8});
-  renderMixTimeline();
-  document.getElementById('mix-empty-zone').style.display='none';
-  document.getElementById('mix-editor-wrap').style.display='block';
-  drawMixCanvas();toast('"'+track.name+'" ajouté','ok');
-}
-function removeMixTrack(key){
-  mixTracks=mixTracks.filter(m=>String(m.id)!==String(key)&&m.fbKey!==String(key));
-  renderMixTimeline();drawMixCanvas();
-  if(!mixTracks.length){document.getElementById('mix-empty-zone').style.display='block';document.getElementById('mix-editor-wrap').style.display='none';}
-}
-function setMixVol(key,v){const m=mixTracks.find(t=>String(t.id)===String(key)||t.fbKey===String(key));if(m){m.vol=parseFloat(v);drawMixCanvas();}}
-function renderMixTimeline(){
-  const el=document.getElementById('mix-timeline');
-  if(!mixTracks.length){el.innerHTML='';return;}
-  el.innerHTML=mixTracks.map((t,i)=>{
-    const key=t.fbKey||t.id;
-    const cov=t.coverData||t.coverUrl;
-    return`<div class="mix-row" style="border-left-color:${MIX_COLORS[i%MIX_COLORS.length]}">
-      <div class="mix-row-cov">${cov?`<img src="${cov}"/>`:'<span style="font-size:20px">'+ci(t.category)+'</span>'}</div>
-      <div class="mix-row-info">
-        <div class="mix-row-nm">${t.name}</div>
-        <div class="mix-row-art">${t.artist||cl(t.category)} ${t.isCloud?'· ☁️':''}</div>
-        <div class="mix-row-vol-row"><span style="font-size:11px;color:var(--tx3)">🔊</span><input type="range" min="0" max="1" step=".01" value="${t.vol}" oninput="setMixVol('${key}',this.value);this.nextElementSibling.textContent=Math.round(this.value*100)+'%'"/><span>${Math.round(t.vol*100)}%</span></div>
+
+function renderMPList(cat) {
+  const list = document.getElementById('mp-list');
+
+  if (cat === 'ambient') {
+    // Show ambient sounds
+    list.innerHTML = AMBS.map(s => `
+      <div onclick="addAmbToMix('${s.id}');closeModal('mix-picker-modal')"
+        style="display:flex;align-items:center;gap:11px;padding:11px 13px;background:var(--bg3);border-radius:10px;cursor:pointer;border:1px solid transparent;transition:all .2s"
+        onmouseover="this.style.borderColor='var(--ac)'" onmouseout="this.style.borderColor='transparent'">
+        <div style="width:42px;height:42px;border-radius:9px;background:var(--sf2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${s.icon}</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600">${s.name}</div><div style="font-size:11px;color:var(--tx3);margin-top:2px">Son d'ambiance généré</div></div>
+        <div style="font-size:11px;color:var(--ac2);flex-shrink:0">+ Mix</div>
+      </div>`).join('');
+    return;
+  }
+
+  let items = myTracks;
+  if (cat === 'creation') items = myTracks.filter(t => t.category === 'creation');
+  else if (cat === 'cloud') items = myTracks.filter(t => t.isCloud);
+  else if (cat !== 'all') items = myTracks.filter(t => t.category === cat);
+
+  if (!items.length) { list.innerHTML = '<div style="text-align:center;color:var(--tx3);padding:20px;font-size:13px">Aucune piste disponible</div>'; return; }
+
+  list.innerHTML = items.map(t => {
+    const cov = t.coverData || t.coverUrl;
+    return `<div onclick="addTrackToMix('${t.fbKey || t.id}');closeModal('mix-picker-modal')"
+      style="display:flex;align-items:center;gap:11px;padding:11px 13px;background:var(--bg3);border-radius:10px;cursor:pointer;border:1px solid transparent;transition:all .2s"
+      onmouseover="this.style.borderColor='var(--ac)'" onmouseout="this.style.borderColor='transparent'">
+      <div style="width:42px;height:42px;border-radius:9px;background:var(--sf2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden">
+        ${cov ? `<img src="${cov}" style="width:100%;height:100%;object-fit:cover"/>` : ci(t.category)}
       </div>
-      <button class="mix-del" onclick="removeMixTrack('${key}')">✕</button>
+      <div style="overflow:hidden;flex:1">
+        <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.name}</div>
+        <div style="font-size:11px;color:var(--tx3);margin-top:2px">${t.artist || cl(t.category)} ${t.isCloud ? '· ☁️' : ''}</div>
+      </div>
+      <div style="font-size:11px;color:var(--ac2);flex-shrink:0">+ Mix</div>
     </div>`;
   }).join('');
-  document.getElementById('mix-n-tracks').textContent=mixTracks.length+' piste'+(mixTracks.length>1?'s':'');
 }
-function drawMixCanvas(){
-  const c=document.getElementById('mix-canvas');if(!c)return;
-  c.width=(c.offsetWidth||300)*devicePixelRatio;c.height=64;
-  const ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);if(!mixTracks.length)return;
-  const bw=c.width/mixTracks.length;
-  mixTracks.forEach((t,i)=>{
-    const x=i*bw;const h=14+t.vol*48;
-    const g=ctx.createLinearGradient(0,64-h,0,64);g.addColorStop(0,MIX_COLORS[i%MIX_COLORS.length]);g.addColorStop(1,MIX_COLORS[i%MIX_COLORS.length]+'33');
-    ctx.fillStyle=g;ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x+3,64-h,bw-6,h,4);else ctx.rect(x+3,64-h,bw-6,h);ctx.fill();
-    ctx.fillStyle='rgba(255,255,255,.75)';const fs=Math.max(8,Math.min(11,Math.floor(bw/6)));ctx.font='600 '+fs+'px sans-serif';ctx.textAlign='center';
-    ctx.fillText(t.name.length>9?t.name.slice(0,8)+'…':t.name,x+bw/2,60);
+
+// ── Add tracks ──
+function addTrackToMix(key) {
+  const track = myTracks.find(t => String(t.id) === String(key) || t.fbKey === String(key));
+  if (!track) return;
+  const color = MIX_COLORS[mixTracks.length % MIX_COLORS.length];
+  const dur = 30; // default 30s visible block
+  const startSec = mixTracks.length === 0 ? 0 : Math.max(...mixTracks.map(t => t.startSec + t.durationSec));
+  mixTracks.push({ ...track, vol: 0.8, startSec, durationSec: dur, color, mixId: ++mixIdCounter });
+  if (startSec + dur > mixDuration) mixDuration = startSec + dur + 10;
+  renderMixUI();
+  toast('"' + track.name + '" ajouté au mix', 'ok');
+}
+
+function addAmbToMix(ambId) {
+  const s = AMBS.find(x => x.id === ambId);
+  if (!s) return;
+  const color = MIX_COLORS[mixTracks.length % MIX_COLORS.length];
+  const startSec = mixTracks.length === 0 ? 0 : Math.max(...mixTracks.map(t => t.startSec + t.durationSec));
+  const dur = 20;
+  mixTracks.push({ name: s.name, artist: 'Ambiance', category: 'ambient', isAmb: true, ambId: s.id, icon: s.icon, vol: 0.5, startSec, durationSec: dur, color, mixId: ++mixIdCounter });
+  if (startSec + dur > mixDuration) mixDuration = startSec + dur + 10;
+  renderMixUI();
+  toast(s.name + ' ajouté au mix', 'ok');
+}
+
+// ── Render full mix UI ──
+function renderMixUI() {
+  renderMixRuler();
+  renderMixTracksArea();
+  renderMixTrackList();
+}
+
+function renderMixRuler() {
+  const ruler = document.getElementById('mix-ruler');
+  if (!ruler) return;
+  const totalPx = mixDuration * PX_PER_SEC;
+  const ticks = Math.ceil(mixDuration / 10);
+  ruler.style.width = (TIMELINE_LEFT + totalPx) + 'px';
+  ruler.innerHTML = Array.from({ length: ticks + 1 }, (_, i) => {
+    const sec = i * 10;
+    const left = TIMELINE_LEFT + sec * PX_PER_SEC;
+    return `<div style="position:absolute;left:${left}px;top:0;bottom:0;display:flex;align-items:center;gap:0">
+      <div style="width:1px;height:100%;background:var(--bd2)"></div>
+      <span style="font-size:10px;color:var(--tx3);margin-left:4px;white-space:nowrap">${sec}s</span>
+    </div>`;
+  }).join('');
+}
+
+function renderMixTracksArea() {
+  const area = document.getElementById('mix-tracks-area');
+  const emptyMsg = document.getElementById('mix-empty-msg');
+  if (!area) return;
+
+  if (!mixTracks.length) {
+    if (emptyMsg) emptyMsg.style.display = 'flex';
+    // Clear track rows
+    area.querySelectorAll('.mix-track-row').forEach(el => el.remove());
+    return;
+  }
+  if (emptyMsg) emptyMsg.style.display = 'none';
+
+  // Remove old rows
+  area.querySelectorAll('.mix-track-row').forEach(el => el.remove());
+
+  const totalPx = mixDuration * PX_PER_SEC;
+
+  mixTracks.forEach((t, i) => {
+    const row = document.createElement('div');
+    row.className = 'mix-track-row';
+    row.dataset.mixId = t.mixId;
+    row.style.cssText = `display:flex;align-items:stretch;height:${TRACK_H}px;border-bottom:1px solid var(--bd);position:relative`;
+
+    // Label
+    const label = document.createElement('div');
+    label.style.cssText = `width:${TIMELINE_LEFT}px;flex-shrink:0;display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--bg2);border-right:2px solid ${t.color};z-index:2`;
+    const cov = t.coverData || t.coverUrl;
+    label.innerHTML = `
+      <div style="width:32px;height:32px;border-radius:6px;background:var(--sf2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;overflow:hidden">
+        ${cov ? `<img src="${cov}" style="width:100%;height:100%;object-fit:cover"/>` : (t.icon || ci(t.category))}
+      </div>
+      <div style="overflow:hidden;flex:1;min-width:0">
+        <div style="font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx)">${t.name}</div>
+        <div style="font-size:10px;color:var(--tx3);margin-top:1px">${Math.round(t.vol * 100)}%</div>
+      </div>`;
+
+    // Timeline area
+    const timeline = document.createElement('div');
+    timeline.style.cssText = `flex:1;position:relative;background:repeating-linear-gradient(90deg,var(--bg3) 0px,var(--bg3) ${PX_PER_SEC * 10 - 1}px,var(--bd) ${PX_PER_SEC * 10}px);min-width:${totalPx}px`;
+
+    // Block
+    const block = document.createElement('div');
+    const leftPx = t.startSec * PX_PER_SEC;
+    const widthPx = t.durationSec * PX_PER_SEC;
+    block.style.cssText = `position:absolute;left:${leftPx}px;top:4px;width:${widthPx}px;height:${TRACK_H - 12}px;background:${t.color}22;border:2px solid ${t.color};border-radius:8px;cursor:grab;overflow:hidden;user-select:none;transition:box-shadow .15s`;
+    block.innerHTML = `
+      <div style="background:${t.color};height:4px;border-radius:6px 6px 0 0"></div>
+      <div style="padding:4px 8px;font-size:11px;font-weight:600;color:${t.color};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.name}</div>
+      <!-- waveform bars -->
+      <div style="display:flex;align-items:flex-end;gap:1px;padding:0 6px;height:16px;opacity:.6">
+        ${Array.from({length:20},(_,j)=>`<div style="flex:1;background:${t.color};border-radius:1px;height:${Math.abs(Math.sin(j*0.7+i))*14+2}px"></div>`).join('')}
+      </div>
+      <!-- resize handle right -->
+      <div class="mix-resize-handle" data-mixid="${t.mixId}" style="position:absolute;right:0;top:0;bottom:0;width:10px;cursor:ew-resize;background:${t.color};opacity:.6;border-radius:0 6px 6px 0"></div>`;
+
+    // Drag to move block
+    let dragging = false, dragStartX = 0, dragStartSec = 0;
+    block.addEventListener('mousedown', e => {
+      if (e.target.classList.contains('mix-resize-handle')) return;
+      dragging = true; dragStartX = e.clientX; dragStartSec = t.startSec;
+      block.style.cursor = 'grabbing'; block.style.boxShadow = `0 0 0 2px ${t.color}`;
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      const dx = e.clientX - dragStartX;
+      t.startSec = Math.max(0, dragStartSec + dx / PX_PER_SEC);
+      block.style.left = (t.startSec * PX_PER_SEC) + 'px';
+      renderMixTrackList();
+    });
+    document.addEventListener('mouseup', () => { if(dragging){dragging=false;block.style.cursor='grab';block.style.boxShadow='none';} });
+
+    // Resize handle
+    const resizeHandle = block.querySelector('.mix-resize-handle');
+    if (resizeHandle) {
+      let resizing = false, resizeStartX = 0, resizeStartDur = 0;
+      resizeHandle.addEventListener('mousedown', e => {
+        resizing = true; resizeStartX = e.clientX; resizeStartDur = t.durationSec;
+        e.stopPropagation(); e.preventDefault();
+      });
+      document.addEventListener('mousemove', e => {
+        if (!resizing) return;
+        const dx = e.clientX - resizeStartX;
+        t.durationSec = Math.max(2, resizeStartDur + dx / PX_PER_SEC);
+        block.style.width = (t.durationSec * PX_PER_SEC) + 'px';
+        const endSec = t.startSec + t.durationSec;
+        if (endSec > mixDuration) { mixDuration = endSec + 5; renderMixRuler(); }
+        renderMixTrackList();
+      });
+      document.addEventListener('mouseup', () => { resizing = false; });
+    }
+
+    // Touch drag support for mobile
+    block.addEventListener('touchstart', e => {
+      if (e.target.classList.contains('mix-resize-handle')) return;
+      dragging = true; dragStartX = e.touches[0].clientX; dragStartSec = t.startSec;
+    }, {passive:true});
+    block.addEventListener('touchmove', e => {
+      if (!dragging) return;
+      const dx = e.touches[0].clientX - dragStartX;
+      t.startSec = Math.max(0, dragStartSec + dx / PX_PER_SEC);
+      block.style.left = (t.startSec * PX_PER_SEC) + 'px';
+    }, {passive:true});
+    block.addEventListener('touchend', () => { dragging = false; renderMixTrackList(); });
+
+    timeline.appendChild(block);
+    row.appendChild(label);
+    row.appendChild(timeline);
+    area.appendChild(row);
   });
+
+  // Update playhead height
+  const ph = document.getElementById('mix-playhead');
+  if (ph) ph.style.height = (mixTracks.length * TRACK_H + 16) + 'px';
 }
-function playMix(){
-  if(!mixTracks.length)return;stopMix();
-  const ctx2=new(window.AudioContext||window.webkitAudioContext)();mixCtx2=ctx2;mixNodes=[];
-  mixTracks.forEach(t=>{
-    const src=t.isCloud?t.audioUrl:t.audioData;
-    const audio=new Audio(src);if(t.isCloud)audio.crossOrigin='anonymous';
-    const s2=ctx2.createMediaElementSource(audio);const gain=ctx2.createGain();gain.gain.value=t.vol;
-    s2.connect(gain);gain.connect(ctx2.destination);audio.play().catch(()=>{});mixNodes.push({audio,gain});
+
+function renderMixTrackList() {
+  const list = document.getElementById('mix-track-list');
+  const noMsg = document.getElementById('mix-notrack-msg');
+  if (!list) return;
+  if (!mixTracks.length) { if (noMsg) noMsg.style.display = 'block'; return; }
+  if (noMsg) noMsg.style.display = 'none';
+
+  list.innerHTML = mixTracks.map(t => `
+    <div style="display:flex;align-items:center;gap:10px;background:var(--sf);border:1px solid var(--bd);border-left:3px solid ${t.color};border-radius:10px;padding:10px 13px">
+      <div style="width:10px;height:10px;border-radius:50%;background:${t.color};flex-shrink:0"></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.name}</div>
+        <div style="font-size:11px;color:var(--tx3);margin-top:1px">Début: ${t.startSec.toFixed(1)}s · Durée: ${t.durationSec.toFixed(1)}s</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+        <span style="font-size:10px;color:var(--tx3)">🔊</span>
+        <input type="range" min="0" max="1" step=".01" value="${t.vol}"
+          oninput="setMixTrackVol(${t.mixId},this.value);this.nextElementSibling.textContent=Math.round(this.value*100)+'%'"
+          style="width:70px;accent-color:${t.color};cursor:pointer"/>
+        <span style="font-size:10.5px;color:var(--tx3);width:30px;text-align:right">${Math.round(t.vol*100)}%</span>
+      </div>
+      <button onclick="removeMixTrack(${t.mixId})" style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:16px;padding:4px;line-height:1;transition:color .2s;flex-shrink:0" onmouseover="this.style.color='var(--dn)'" onmouseout="this.style.color='var(--tx3)'">✕</button>
+    </div>`).join('');
+}
+
+function setMixTrackVol(mixId, val) {
+  const t = mixTracks.find(x => x.mixId === mixId);
+  if (t) {
+    t.vol = parseFloat(val);
+    // Update live if playing
+    const node = mixAudioNodes.find(n => n.mixId === mixId);
+    if (node && node.gainNode) node.gainNode.gain.value = t.vol * parseFloat(document.getElementById('mix-master-vol').value);
+    // Update label in timeline
+    renderMixTracksArea();
+  }
+}
+
+function removeMixTrack(mixId) {
+  mixTracks = mixTracks.filter(t => t.mixId !== mixId);
+  if (!mixTracks.length) mixDuration = 60;
+  renderMixUI();
+}
+
+function clearMix() {
+  if (mixTracks.length && !confirm('Vider le mix ?')) return;
+  stopMixPlay();
+  mixTracks = []; mixDuration = 60; mixCursorPos = 0;
+  renderMixUI();
+  toast('Mix vidé', 'ok');
+}
+
+// ── PLAYBACK ──
+function toggleMixPlay() {
+  if (mixPlaying) stopMixPlay(); else playMix();
+}
+
+function playMix() {
+  if (!mixTracks.length) { toast('Ajoutez des pistes au mix', 'info'); return; }
+  stopMixPlay();
+
+  mixCtx2 = new (window.AudioContext || window.webkitAudioContext)();
+  mixMasterGain = mixCtx2.createGain();
+  mixMasterGain.gain.value = parseFloat(document.getElementById('mix-master-vol').value);
+  mixMasterGain.connect(mixCtx2.destination);
+
+  mixAudioNodes = [];
+  const now = mixCtx2.currentTime;
+  mixStartTime = now - mixCursorPos;
+
+  mixTracks.forEach(t => {
+    if (t.isAmb) {
+      // Ambient sound — build via Web Audio
+      const ambS = AMBS.find(x => x.id === t.ambId);
+      if (!ambS) return;
+      const gain = mixCtx2.createGain();
+      gain.gain.value = t.vol;
+      gain.connect(mixMasterGain);
+      // Build simple noise/tone
+      const ambNode = _buildAmbForMix(ambS, mixCtx2, gain);
+      const delay = t.startSec - mixCursorPos;
+      const startAt = delay > 0 ? now + delay : now;
+      const dur = t.durationSec;
+      if (delay <= 0 || delay < dur) {
+        // schedule stop
+        const stopAt = startAt + dur + Math.max(0, -delay);
+        mixAudioNodes.push({ mixId: t.mixId, ambNode, gainNode: gain,
+          timer: setTimeout(() => { try { ambNode.stop(); } catch(e){} }, (stopAt - now) * 1000) });
+      }
+      return;
+    }
+
+    const src = t.isCloud ? t.audioUrl : t.audioData;
+    if (!src) return;
+    const audio = new Audio(src);
+    if (t.isCloud) audio.crossOrigin = 'anonymous';
+
+    const srcNode = mixCtx2.createMediaElementSource(audio);
+    const gainNode = mixCtx2.createGain();
+    gainNode.gain.value = t.vol;
+    srcNode.connect(gainNode);
+    gainNode.connect(mixMasterGain);
+
+    const delay = t.startSec - mixCursorPos;
+    if (delay > 0) {
+      const tmr = setTimeout(() => {
+        audio.play().catch(() => {});
+        const stopTmr = setTimeout(() => audio.pause(), t.durationSec * 1000);
+        const node = mixAudioNodes.find(n => n.mixId === t.mixId);
+        if (node) node.stopTimer = stopTmr;
+      }, delay * 1000);
+      mixAudioNodes.push({ mixId: t.mixId, audio, gainNode, timer: tmr });
+    } else {
+      // Start immediately, seek if needed
+      const seekTo = -delay;
+      audio.currentTime = Math.min(seekTo, audio.duration || 0);
+      audio.play().catch(() => {});
+      const stopTmr = setTimeout(() => audio.pause(), t.durationSec * 1000);
+      mixAudioNodes.push({ mixId: t.mixId, audio, gainNode, timer: stopTmr });
+    }
   });
-  mixPlaying=true;const btn=document.getElementById('mix-play-btn');btn.textContent='⏹ Stop';btn.onclick=stopMix;
-  document.getElementById('mix-status').textContent='Lecture...';toast('Mix en lecture','ok');
+
+  mixPlaying = true;
+  const btn = document.getElementById('mix-play-btn');
+  if (btn) { btn.textContent = '⏸ Pause'; btn.style.background = 'linear-gradient(135deg,#ff6b8a,#cc2020)'; }
+  animMixCursor();
+  toast('▶ Mix en lecture', 'ok');
 }
-function stopMix(){mixNodes.forEach(n=>{try{n.audio.pause();}catch(e){}});mixNodes=[];if(mixCtx2){try{mixCtx2.close();}catch(e){}mixCtx2=null;}mixPlaying=false;const btn=document.getElementById('mix-play-btn');if(btn){btn.textContent='▶ Écouter';btn.onclick=playMix;}document.getElementById('mix-status').textContent='Prêt';}
-function exportMixHint(){toast('Lisez le mix puis enregistrez depuis le Studio 🎙️','info');}
-function clearMix(){if(!confirm('Vider le mix ?'))return;stopMix();mixTracks=[];renderMixTimeline();drawMixCanvas();document.getElementById('mix-empty-zone').style.display='block';document.getElementById('mix-editor-wrap').style.display='none';toast('Mix vidé','ok');}
+
+function _buildAmbForMix(s, ctx, gain) {
+  if (s.type === 'tone') {
+    const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = s.freq;
+    const g2 = ctx.createGain(); g2.gain.value = .04;
+    o.connect(g2); g2.connect(gain); o.start();
+    return { stop: () => o.stop() };
+  }
+  const bs = ctx.sampleRate * 3; const buf = ctx.createBuffer(1, bs, ctx.sampleRate);
+  const d = buf.getChannelData(0); let lb = 0;
+  for (let i = 0; i < bs; i++) { if (s.type === 'brown') { d[i] = (lb + .02*(Math.random()*2-1))/1.02; lb=d[i]; d[i]*=3; } else d[i]=Math.random()*2-1; }
+  const src2 = ctx.createBufferSource(); src2.buffer = buf; src2.loop = true;
+  if (s.type !== 'white' && s.type !== 'brown') {
+    const f = ctx.createBiquadFilter(); f.type = s.type==='noise_lp'?'lowpass':'bandpass'; f.frequency.value=s.freq||600; f.Q.value=s.q||2;
+    src2.connect(f); f.connect(gain);
+  } else { src2.connect(gain); }
+  src2.start();
+  return { stop: () => { try { src2.stop(); } catch(e){} } };
+}
+
+function stopMixPlay() {
+  mixAudioNodes.forEach(n => {
+    if (n.timer) clearTimeout(n.timer);
+    if (n.stopTimer) clearTimeout(n.stopTimer);
+    if (n.audio) { try { n.audio.pause(); } catch(e){} }
+    if (n.ambNode) { try { n.ambNode.stop(); } catch(e){} }
+    if (n.gainNode) { try { n.gainNode.disconnect(); } catch(e){} }
+  });
+  mixAudioNodes = [];
+  if (mixCtx2) { try { mixCtx2.close(); } catch(e){} mixCtx2 = null; }
+  mixPlaying = false;
+  if (mixCursorAF) { cancelAnimationFrame(mixCursorAF); mixCursorAF = null; }
+  const btn = document.getElementById('mix-play-btn');
+  if (btn) { btn.textContent = '▶ Jouer'; btn.style.background = 'linear-gradient(135deg,var(--ac),var(--ac3))'; }
+}
+
+function stopMix() { stopMixPlay(); mixCursorPos = 0; updateMixCursorUI(); }
+
+function animMixCursor() {
+  if (!mixPlaying || !mixCtx2) return;
+  mixCursorPos = mixCtx2.currentTime - mixStartTime + (mixCursorPos > 0 ? 0 : 0);
+  // simpler: track elapsed
+  if (!mixPlaying) return;
+  updateMixCursorUI();
+  mixCursorAF = requestAnimationFrame(animMixCursor);
+}
+
+function updateMixCursorUI() {
+  const ph = document.getElementById('mix-playhead');
+  if (!ph) return;
+  const leftPx = TIMELINE_LEFT + mixCursorPos * PX_PER_SEC;
+  ph.style.left = leftPx + 'px';
+  ph.style.display = mixPlaying ? 'block' : 'none';
+}
+
+function setMixMasterVol(v) {
+  if (mixMasterGain) mixMasterGain.gain.value = parseFloat(v);
+}
+
+function exportMixHint() { toast('Jouez le mix puis enregistrez depuis le Studio 🎙️', 'info'); }
+
+// ── openMixPicker navigates to mix page ──
+function _openMixPickerModal() { renderMPList(mpFilterCat); openModal('mix-picker-modal'); }
+function openMixPicker() {
+  if (!document.getElementById('page-mix').classList.contains('active')) goPage('mix');
+  _openMixPickerModal();
+}
+
+// Keep legacy functions that might be called
+function addToMix(key) { addTrackToMix(key); }
+function playMix() { toggleMixPlay(); }
 
 // ═══════════ STATS ═══════════
 function renderStats(){
@@ -1624,7 +2095,312 @@ function toast(msg,type='ok'){const c=document.getElementById('toasts');const t=
 // ═══════════ PWA ═══════════
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();pwaPrompt=e;});
 function installPWA(){if(pwaPrompt)pwaPrompt.prompt();else toast('Menu navigateur → Ajouter à l’écran d’accueil','info');}
-if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').then(reg=>{console.log('[Beyma Flow] SW registered');}).catch(err=>console.warn('[Beyma Flow] SW error:',err));}
+
+
+// ═══════════════════════════════════════════
+// JAMENDO API — Découvrir
+// ═══════════════════════════════════════════
+const JM_ID = 'f5f6c41d';
+const JM_BASE = 'https://api.jamendo.com/v3.0';
+let jmType = 'tracks';
+let jmCurrentAudio = null;
+let jmCurrentBtn = null;
+let jmSearchTimer = null;
+let jmLastQuery = '';
+let jmArtistCache = {};
+
+function setJmType(type) {
+  jmType = type;
+  ['tracks','artists','albums'].forEach(t => {
+    const btn = document.getElementById('jm-type-'+t);
+    if(btn) btn.classList.toggle('active', t === type);
+  });
+  const q = document.getElementById('jm-search').value.trim();
+  if(q) jmSearch(q);
+}
+
+function jmSearchDebounce(val) {
+  clearTimeout(jmSearchTimer);
+  jmSearchTimer = setTimeout(() => { if(val.trim().length > 1) jmSearch(val.trim()); }, 500);
+}
+
+function jmSearchGenre(genre) {
+  // Update genre tabs
+  document.querySelectorAll('#jm-genres .ctab').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  const input = document.getElementById('jm-search');
+  if(genre) { input.value = genre; jmSearch(genre); }
+  else { input.value = ''; jmFeatured(); }
+}
+
+async function jmSearch(query) {
+  if(!query || query.trim().length < 1) { jmFeatured(); return; }
+  jmLastQuery = query.trim();
+  showJmLoading(true);
+  hideArtistPage();
+  try {
+    if(jmType === 'tracks') await jmSearchTracks(query);
+    else if(jmType === 'artists') await jmSearchArtists(query);
+    else if(jmType === 'albums') await jmSearchAlbums(query);
+  } catch(e) {
+    showJmStatus('Erreur de recherche: ' + e.message);
+  }
+  showJmLoading(false);
+}
+
+async function jmSearchTracks(query) {
+  const url = `${JM_BASE}/tracks/?client_id=${JM_ID}&format=json&limit=30&search=${encodeURIComponent(query)}&include=musicinfo&imagesize=200&order=popularity_total_desc`;
+  const resp = await fetch(url);
+  const data = await resp.json();
+  if(!data.results || !data.results.length) { showJmStatus('Aucun résultat pour "'+query+'"'); return; }
+  renderJmTracks(data.results);
+}
+
+async function jmSearchArtists(query) {
+  const url = `${JM_BASE}/artists/?client_id=${JM_ID}&format=json&limit=20&namesearch=${encodeURIComponent(query)}&imagesize=200&order=popularity_total_desc`;
+  const resp = await fetch(url);
+  const data = await resp.json();
+  if(!data.results || !data.results.length) { showJmStatus('Aucun artiste trouvé pour "'+query+'"'); return; }
+  renderJmArtists(data.results);
+}
+
+async function jmSearchAlbums(query) {
+  const url = `${JM_BASE}/albums/?client_id=${JM_ID}&format=json&limit=20&namesearch=${encodeURIComponent(query)}&imagesize=200&order=popularity_total_desc`;
+  const resp = await fetch(url);
+  const data = await resp.json();
+  if(!data.results || !data.results.length) { showJmStatus('Aucun album trouvé pour "'+query+'"'); return; }
+  renderJmAlbums(data.results);
+}
+
+async function jmFeatured() {
+  showJmLoading(true);
+  hideArtistPage();
+  try {
+    const url = `${JM_BASE}/tracks/?client_id=${JM_ID}&format=json&limit=24&order=popularity_total_desc&imagesize=200`;
+    const resp = await fetch(url);
+    const data = await resp.json();
+    if(data.results) renderJmTracks(data.results, true);
+  } catch(e) { showJmStatus('Impossible de charger les tendances'); }
+  showJmLoading(false);
+}
+
+// ── Render tracks as grid ──
+function renderJmTracks(tracks, isFeatured) {
+  const r = document.getElementById('jm-results');
+  const title = isFeatured ? '🔥 Tendances Jamendo' : `🎵 ${tracks.length} résultat${tracks.length>1?'s':''} pour "${jmLastQuery}"`;
+  r.innerHTML = `<div style="font-family:var(--font-d);font-size:19px;font-weight:300;margin-bottom:14px">${title}</div>
+    <div style="display:flex;flex-direction:column;gap:8px" id="jm-track-list">
+      ${tracks.map(t => jmTrackRowHTML(t)).join('')}
+    </div>`;
+}
+
+function jmTrackRowHTML(t) {
+  const dur = t.duration ? Math.floor(t.duration/60)+':'+(t.duration%60+'').padStart(2,'0') : '';
+  const cov = t.image || t.album_image || '';
+  const covHTML = cov ? `<img src="${cov}" loading="lazy"/>` : '🎵';
+  return `<div class="jm-track-row" id="jmrow-${t.id}">
+    <div class="jm-track-cov" onclick="jmTogglePlay('${t.id}','${t.audio}','jmrow-${t.id}')">${covHTML}</div>
+    <div class="jm-track-info">
+      <div class="jm-track-nm" onclick="jmTogglePlay('${t.id}','${t.audio}','jmrow-${t.id}')">${t.name}</div>
+      <div class="jm-track-art" onclick="openArtistById('${t.artist_id}','${t.artist_name}')">${t.artist_name}</div>
+    </div>
+    <div class="jm-track-dur">${dur}</div>
+    <div class="jm-track-btns">
+      <button class="jmb" id="jmbtn-${t.id}" onclick="jmTogglePlay('${t.id}','${t.audio}','jmrow-${t.id}')">▶</button>
+      <button class="jmb pri" onclick="jmAddToLibrary(${JSON.stringify(t).replace(/"/g,'&quot;')})">+ Lib</button>
+      <button class="jmb" onclick="jmDownload('${t.audiodownload}','${t.name}')">⬇</button>
+    </div>
+  </div>`;
+}
+
+// ── Render artists as grid ──
+function renderJmArtists(artists) {
+  const r = document.getElementById('jm-results');
+  r.innerHTML = `<div style="font-family:var(--font-d);font-size:19px;font-weight:300;margin-bottom:14px">🎤 ${artists.length} artiste${artists.length>1?'s':''} trouvé${artists.length>1?'s':''}</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px">
+      ${artists.map(a => `
+        <div class="jm-card" onclick="openArtistById('${a.id}','${a.name}')" style="cursor:pointer">
+          <div class="jm-card-cov">
+            ${a.image ? `<img src="${a.image}" loading="lazy"/>` : '<div class="jm-card-ph">🎤</div>'}
+            <div class="jm-card-ov"><div class="jm-card-play">🎤</div></div>
+          </div>
+          <div class="jm-card-info">
+            <h4>${a.name}</h4>
+            <p style="color:var(--ac2);font-size:11px">Voir les titres →</p>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ── Render albums ──
+function renderJmAlbums(albums) {
+  const r = document.getElementById('jm-results');
+  r.innerHTML = `<div style="font-family:var(--font-d);font-size:19px;font-weight:300;margin-bottom:14px">💿 ${albums.length} album${albums.length>1?'s':''} trouvé${albums.length>1?'s':''}</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px">
+      ${albums.map(a => `
+        <div class="jm-card" onclick="openAlbum('${a.id}','${a.name}','${a.artist_name}')" style="cursor:pointer">
+          <div class="jm-card-cov">
+            ${a.image ? `<img src="${a.image}" loading="lazy"/>` : '<div class="jm-card-ph">💿</div>'}
+            <div class="jm-card-ov"><div class="jm-card-play">▶</div></div>
+          </div>
+          <div class="jm-card-info">
+            <h4>${a.name}</h4>
+            <p>${a.artist_name}</p>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ── Artist page ──
+async function openArtistById(artistId, artistName) {
+  if(!artistId || artistId === 'undefined') { toast('ID artiste non disponible', 'err'); return; }
+  showJmLoading(true);
+  document.getElementById('jm-results').style.display = 'none';
+  document.getElementById('jm-artist-page').style.display = 'block';
+  try {
+    // Get artist info
+    const aUrl = `${JM_BASE}/artists/?client_id=${JM_ID}&format=json&id=${artistId}&imagesize=300`;
+    const aResp = await fetch(aUrl);
+    const aData = await aResp.json();
+    const artist = aData.results && aData.results[0];
+    // Get artist tracks
+    const tUrl = `${JM_BASE}/tracks/?client_id=${JM_ID}&format=json&limit=50&artist_id=${artistId}&imagesize=200&order=popularity_total_desc`;
+    const tResp = await fetch(tUrl);
+    const tData = await tResp.json();
+    // Render artist header
+    const header = document.getElementById('jm-artist-header');
+    if(artist) {
+      header.innerHTML = `
+        ${artist.image ? `<img src="${artist.image}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;flex-shrink:0"/>` : '<div style="width:80px;height:80px;border-radius:50%;background:var(--sf2);display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0">🎤</div>'}
+        <div>
+          <div style="font-family:var(--font-d);font-size:24px;font-weight:300">${artist.name}</div>
+          <div style="font-size:12px;color:var(--tx3);margin-top:4px">${artist.joindate ? 'Membre depuis '+artist.joindate.slice(0,4) : ''}</div>
+          <div style="font-size:12px;color:var(--ac2);margin-top:6px">${tData.results ? tData.results.length+' titres disponibles' : ''}</div>
+        </div>`;
+    } else {
+      header.innerHTML = `<div style="font-family:var(--font-d);font-size:24px;font-weight:300">${artistName}</div>`;
+    }
+    // Render tracks
+    document.getElementById('jm-artist-tracks-title').textContent = `🎵 Titres de ${artistName}`;
+    const tracksEl = document.getElementById('jm-artist-tracks');
+    if(tData.results && tData.results.length) {
+      tracksEl.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px">${tData.results.map(t => jmTrackRowHTML(t)).join('')}</div>`;
+    } else {
+      tracksEl.innerHTML = '<div style="color:var(--tx3);font-size:13px;text-align:center;padding:20px">Aucun titre trouvé</div>';
+    }
+  } catch(e) { toast('Erreur: '+e.message,'err'); }
+  showJmLoading(false);
+}
+
+async function openAlbum(albumId, albumName, artistName) {
+  showJmLoading(true);
+  document.getElementById('jm-results').style.display = 'none';
+  document.getElementById('jm-artist-page').style.display = 'block';
+  try {
+    const url = `${JM_BASE}/tracks/?client_id=${JM_ID}&format=json&limit=50&album_id=${albumId}&imagesize=200&order=track_position_asc`;
+    const resp = await fetch(url); const data = await resp.json();
+    document.getElementById('jm-artist-header').innerHTML = `
+      <div style="font-family:var(--font-d);font-size:22px;font-weight:300">💿 ${albumName}</div>
+      <div style="font-size:13px;color:var(--tx3);margin-top:4px">${artistName} · ${data.results ? data.results.length+' titres' : ''}</div>`;
+    document.getElementById('jm-artist-tracks-title').textContent = "Titres de l'album";
+    const tracksEl = document.getElementById('jm-artist-tracks');
+    if(data.results && data.results.length) {
+      tracksEl.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px">${data.results.map(t => jmTrackRowHTML(t)).join('')}</div>`;
+    } else {
+      tracksEl.innerHTML = '<div style="color:var(--tx3);font-size:13px;text-align:center;padding:20px">Aucun titre</div>';
+    }
+  } catch(e) { toast('Erreur: '+e.message,'err'); }
+  showJmLoading(false);
+}
+
+function closeArtistPage() {
+  document.getElementById('jm-artist-page').style.display = 'none';
+  document.getElementById('jm-results').style.display = 'block';
+}
+function hideArtistPage() {
+  const ap = document.getElementById('jm-artist-page');
+  const r = document.getElementById('jm-results');
+  if(ap) ap.style.display = 'none';
+  if(r) r.style.display = 'block';
+}
+
+// ── Play / Pause ──
+function jmTogglePlay(trackId, audioUrl, rowId) {
+  const btn = document.getElementById('jmbtn-'+trackId);
+  // If same track playing → pause
+  if(jmCurrentAudio && jmCurrentAudio._jmId === trackId) {
+    if(jmCurrentAudio.paused) {
+      jmCurrentAudio.play();
+      if(btn) btn.textContent = '⏸';
+    } else {
+      jmCurrentAudio.pause();
+      if(btn) btn.textContent = '▶';
+    }
+    return;
+  }
+  // Stop previous
+  if(jmCurrentAudio) {
+    jmCurrentAudio.pause();
+    if(jmCurrentBtn) jmCurrentBtn.textContent = '▶';
+  }
+  // Play new
+  const audio = new Audio(audioUrl);
+  audio._jmId = trackId;
+  audio.volume = parseFloat(document.getElementById('vol').value);
+  audio.play().catch(() => toast('Lecture impossible (CORS)', 'err'));
+  audio.onended = () => { if(btn) btn.textContent = '▶'; };
+  jmCurrentAudio = audio;
+  jmCurrentBtn = btn;
+  if(btn) btn.textContent = '⏸';
+  // Highlight row
+  document.querySelectorAll('.jm-track-row').forEach(r => r.style.background = '');
+  const row = document.getElementById(rowId);
+  if(row) row.style.background = 'rgba(124,109,250,.1)';
+}
+
+// ── Add to Library (via Firebase as cloud track) ──
+async function jmAddToLibrary(track) {
+  const name = track.name || 'Titre Jamendo';
+  const artist = track.artist_name || '';
+  const audioUrl = track.audio;
+  const coverUrl = track.image || track.album_image || null;
+  if(!audioUrl) { toast('URL audio non disponible', 'err'); return; }
+  // Add as cloud track in Firebase
+  const meta = { name, artist, category: 'music', audioUrl, coverUrl, coverData: null, isCloud: true, source: 'jamendo', jamendoId: track.id };
+  if(fbDB && fbSyncOn) {
+    const key = await pushCloudTrack(meta);
+    if(key) toast('✓ "'+name+'" ajouté à la bibliothèque ☁️','ok');
+  } else {
+    // Fallback: add as local URL track
+    const localTrack = { name, artist, category:'music', audioData: null, audioUrl, coverUrl, coverData: null, isCloud: true };
+    myTracks.push(localTrack);
+    renderLib(); updateBadges();
+    toast('✓ "'+name+'" ajouté (local)','ok');
+  }
+}
+
+// ── Download ──
+function jmDownload(url, name) {
+  if(!url) { toast('Téléchargement non disponible', 'err'); return; }
+  const a = document.createElement('a');
+  a.href = url; a.download = name + '.mp3';
+  a.target = '_blank'; a.click();
+  toast('⬇️ Téléchargement lancé','ok');
+}
+
+function showJmLoading(show) {
+  const l = document.getElementById('jm-loading');
+  const s = document.getElementById('jm-status');
+  if(l) l.style.display = show ? 'block' : 'none';
+  if(s && show) s.style.display = 'none';
+}
+function showJmStatus(msg) {
+  const s = document.getElementById('jm-status');
+  const r = document.getElementById('jm-results');
+  if(s) { s.textContent = msg; s.style.display = 'block'; }
+  if(r) r.innerHTML = '';
+}
 
 // ═══════════ BOOT ═══════════
 (async()=>{
