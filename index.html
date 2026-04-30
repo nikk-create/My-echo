@@ -469,6 +469,260 @@ html,body{height:100%;font-family:var(--font-b);background:var(--bg);color:var(-
 .jm-track-art:hover{color:var(--ac2);text-decoration:underline}
 .jm-track-dur{font-size:11px;color:var(--tx3);flex-shrink:0}
 .jm-track-btns{display:flex;gap:5px;flex-shrink:0}
+
+/* ═══ EDITORIAL LUXE — Library redesign ═══ */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap');
+
+/* ══ LIBRARY — EDITORIAL LUXE ══ */
+
+/* Header */
+.lib-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:28px;gap:14px;flex-wrap:wrap;
+  padding-bottom:24px;border-bottom:1px solid var(--bd);
+}
+.lib-title{
+  font-family:'Syne',var(--font-b),sans-serif;
+  font-size:clamp(36px,5vw,52px);
+  font-weight:800;letter-spacing:-2px;line-height:1;color:var(--tx);
+}
+.lib-sub{
+  font-size:13px;color:var(--tx3);margin-top:8px;
+  font-weight:300;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.lib-stat-pill{
+  background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.2);
+  color:var(--ac2);font-size:11px;font-weight:700;
+  padding:3px 10px;border-radius:100px;
+}
+
+/* Import buttons */
+.lib-import-row{display:flex;gap:8px;align-items:center;flex-shrink:0;flex-wrap:wrap}
+.lib-btn-local{
+  display:flex;align-items:center;gap:7px;
+  padding:10px 18px;
+  background:linear-gradient(135deg,var(--ac),var(--ac3));
+  border:none;border-radius:11px;color:#fff;
+  font-family:'Syne',var(--font-b),sans-serif;
+  font-size:13px;font-weight:700;cursor:pointer;
+  box-shadow:0 4px 16px var(--glow);
+  transition:all var(--tr);white-space:nowrap;
+}
+.lib-btn-local:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--glow)}
+.lib-btn-cloud{
+  display:flex;align-items:center;gap:7px;
+  padding:10px 18px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:11px;color:var(--tx2);
+  font-family:var(--font-b);font-size:13px;font-weight:500;
+  cursor:pointer;transition:all var(--tr);white-space:nowrap;
+}
+.lib-btn-cloud:hover{border-color:var(--ac2);color:var(--tx);background:rgba(255,255,255,.09)}
+
+/* Search */
+.lib-search{position:relative;margin-bottom:18px}
+.lib-search input{
+  width:100%;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  padding:13px 18px 13px 44px;
+  font-family:var(--font-b);font-size:14px;color:var(--tx);
+  outline:none;transition:all var(--tr);
+}
+.lib-search input:focus{
+  border-color:rgba(124,109,250,.45);
+  background:rgba(255,255,255,.07);
+  box-shadow:0 0 0 3px rgba(124,109,250,.1);
+}
+.lib-search input::placeholder{color:rgba(255,255,255,.2)}
+.lib-search .si{
+  position:absolute;left:15px;top:50%;
+  transform:translateY(-50%);
+  color:rgba(255,255,255,.2);font-size:16px;pointer-events:none;
+}
+
+/* Stats + filter bar */
+.lib-stats-bar{
+  display:flex;gap:6px;margin-bottom:22px;
+  overflow-x:auto;scrollbar-width:none;
+  padding:3px 0 6px;
+  -webkit-overflow-scrolling:touch;
+}
+.lib-stats-bar::-webkit-scrollbar{display:none}
+.lib-stat{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 16px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.03);
+  color:rgba(255,255,255,.4);
+  font-size:12.5px;font-weight:500;
+  cursor:pointer;transition:all .2s;
+  white-space:nowrap;flex-shrink:0;
+  font-family:var(--font-b);
+}
+.lib-stat:hover{
+  border-color:rgba(124,109,250,.25);
+  color:var(--tx);background:rgba(124,109,250,.06);
+}
+.lib-stat.active{
+  background:rgba(124,109,250,.14);
+  border-color:rgba(124,109,250,.35);
+  color:#fff;
+}
+.lib-stat-count{
+  background:rgba(255,255,255,.1);
+  border-radius:100px;
+  padding:1px 7px;
+  font-size:10.5px;font-weight:700;
+  min-width:22px;text-align:center;
+}
+.lib-stat.active .lib-stat-count{
+  background:rgba(124,109,250,.3);
+  color:var(--ac2);
+}
+
+/* Drop zone — compact subtle */
+.lib-drop{
+  border:1.5px dashed rgba(255,255,255,.08);
+  border-radius:12px;
+  padding:18px 20px;
+  display:flex;align-items:center;gap:14px;
+  cursor:pointer;
+  transition:all .2s;
+  position:relative;overflow:hidden;
+  margin-bottom:20px;
+  background:rgba(255,255,255,.02);
+}
+.lib-drop:hover,.lib-drop.drag{
+  border-color:rgba(124,109,250,.35);
+  background:rgba(124,109,250,.04);
+}
+.lib-drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.lib-drop-ic{
+  width:44px;height:44px;border-radius:10px;
+  background:rgba(255,165,80,.1);border:1px solid rgba(255,165,80,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;
+}
+.lib-drop-txt h4{font-size:13.5px;font-weight:600;color:var(--tx)}
+.lib-drop-txt p{font-size:11.5px;color:var(--tx3);margin-top:2px}
+.lib-drop-arrow{
+  margin-left:auto;font-size:18px;color:rgba(255,255,255,.15);
+  transition:color .2s;flex-shrink:0;
+}
+.lib-drop:hover .lib-drop-arrow{color:var(--ac2)}
+
+/* Cloud add banner */
+.lib-cloud-banner{
+  display:flex;align-items:center;gap:12px;
+  background:linear-gradient(135deg,rgba(107,255,200,.06),rgba(124,109,250,.06));
+  border:1px solid rgba(107,255,200,.12);
+  border-radius:12px;padding:14px 16px;
+  margin-bottom:22px;cursor:pointer;
+  transition:all .2s;
+}
+.lib-cloud-banner:hover{
+  border-color:rgba(107,255,200,.25);
+  background:linear-gradient(135deg,rgba(107,255,200,.09),rgba(124,109,250,.09));
+  transform:translateY(-1px);
+}
+.lib-cloud-banner-ic{
+  width:42px;height:42px;border-radius:10px;
+  background:rgba(107,255,200,.1);border:1px solid rgba(107,255,200,.15);
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;
+}
+.lib-cloud-banner-txt h4{font-size:13px;font-weight:600;color:var(--tx)}
+.lib-cloud-banner-txt p{font-size:11.5px;color:var(--tx3);margin-top:2px}
+.lib-cloud-badge{
+  margin-left:auto;
+  background:rgba(107,255,200,.12);
+  border:1px solid rgba(107,255,200,.2);
+  color:var(--ok);
+  font-size:11px;font-weight:700;
+  padding:4px 10px;border-radius:100px;
+  white-space:nowrap;flex-shrink:0;
+}
+
+/* Up progress */
+.up-prog{display:none;margin-top:10px}
+.up-bw{height:4px;background:var(--sf2);border-radius:2px;overflow:hidden}
+.up-bf{height:100%;background:linear-gradient(to right,var(--ac),var(--ac2));transition:width .2s;width:0}
+.up-lbl{font-size:11px;color:var(--tx3);text-align:center;margin-top:5px}
+
+/* Section title above grid */
+.lib-section-title{
+  font-family:'Syne',var(--font-b),sans-serif;
+  font-size:13px;font-weight:700;
+  color:var(--tx3);letter-spacing:.5px;
+  text-transform:uppercase;margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+}
+.lib-section-title::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(to right,var(--bd2),transparent);
+}
+
+
+/* ── CARD VISIBILITY TOGGLE (créations) ── */
+.card-visibility-toggle{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 13px;
+  border-top:1px solid var(--bd);
+  cursor:pointer;transition:all .2s;
+  font-family:var(--font-b);font-size:12.5px;font-weight:600;
+  user-select:none;
+}
+.card-visibility-toggle:hover{
+  filter:brightness(1.2);
+  transform:none;
+}
+.card-visibility-toggle:active{opacity:.8}
+.card-visibility-toggle.is-private{
+  background:rgba(255,107,138,.06);
+  color:rgba(255,100,130,.9);
+  border-top-color:rgba(255,107,138,.15);
+}
+.card-visibility-toggle.is-public{
+  background:rgba(107,255,200,.07);
+  color:var(--ok);
+  border-top-color:rgba(107,255,200,.2);
+}
+.vis-icon{font-size:15px;flex-shrink:0}
+.vis-label{flex:1}
+.vis-arrow{
+  font-size:11px;
+  background:rgba(255,255,255,.08);
+  border-radius:100px;
+  padding:2px 8px;
+  color:var(--tx3);
+  font-weight:400;
+  white-space:nowrap;
+}
+.card-visibility-toggle:hover .vis-arrow{
+  background:rgba(255,255,255,.14);
+  color:var(--tx2);
+}
+.acard{display:flex;flex-direction:column}
+.acard-info{flex:1}
+.card-src{font-size:10px;font-weight:600;padding:2px 7px;border-radius:100px;display:inline-flex;align-items:center;gap:3px}
+.card-src.cloud{background:rgba(107,255,200,.1);color:var(--ok);border:1px solid rgba(107,255,200,.2)}
+.card-src.local{background:rgba(255,165,80,.1);color:#ffaa55;border:1px solid rgba(255,165,80,.2)}
+.card-src.creation{background:rgba(124,109,250,.12);color:var(--ac2);border:1px solid rgba(124,109,250,.2)}
+
+/* ── CRÉATIONS SECTIONS ── */
+.crea-section-title{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--font-d);font-size:18px;font-weight:300;
+  margin-bottom:14px;margin-top:4px;
+}
+.crea-count{
+  font-family:var(--font-b);font-size:11px;font-weight:700;
+  background:rgba(255,255,255,.07);border:1px solid var(--bd2);
+  padding:2px 9px;border-radius:100px;color:var(--tx3);
+}
 </style>
 </head>
 <body>
@@ -610,42 +864,79 @@ html,body{height:100%;font-family:var(--font-b);background:var(--bg);color:var(-
 
     <!-- LIBRARY -->
     <div class="page active" id="page-library">
-      <div class="ph">
-        <div><div class="pt">Bibliothèque</div><div class="ps" id="lib-lbl">—</div></div>
-        <button class="btn-pri" onclick="document.getElementById('au-inp').click()">+ Local</button>
-        <input type="file" id="au-inp" accept="audio/*" multiple style="display:none" onchange="handleFiles(this.files)"/>
-      </div>
-      <div class="srch"><span class="si">🔍</span><input type="text" placeholder="Titre, artiste..." oninput="doSearch(this.value)"/></div>
 
-      <!-- LOCAL IMPORT -->
-      <div class="uzone" id="uzone">
-        <input type="file" accept="audio/*" multiple onchange="handleFiles(this.files)"/>
-        <span class="u-ic">🏠</span>
-        <h3>Import local — glissez vos fichiers ici</h3>
-        <p>MP3, WAV, OGG, FLAC · Stocké sur cet appareil uniquement</p>
-        <div class="up-prog" id="up-prog"><div class="up-bw"><div class="up-bf" id="up-bf"></div></div><div class="up-lbl" id="up-lbl"></div></div>
-      </div>
-
-      <!-- CLOUDINARY CLOUD ADD -->
-      <div class="cloud-add">
-        <h3>☁️ Ajouter depuis Cloudinary <span style="font-size:11px;background:rgba(107,255,200,.15);color:var(--ok);padding:2px 8px;border-radius:100px;font-weight:500;margin-left:4px">Visible sur tous les appareils</span></h3>
-        <p>Uploadez votre musique sur <strong>cloudinary.com</strong> → copiez le lien → collez-le ici. La piste sera visible sur tous les téléphones connectés à Firebase.</p>
-        <div class="cloud-row">
-          <input type="text" class="cloud-input" id="cloud-url" placeholder="https://res.cloudinary.com/votre-compte/audio/upload/votre-musique.mp3"/>
-          <button class="btn-pri" onclick="openCloudModal()" style="flex-shrink:0">☁️ Ajouter</button>
+      <!-- HEADER ÉDITORIAL -->
+      <div class="lib-header">
+        <div>
+          <div class="lib-title" id="lib-title-txt">Bibliothèque</div>
+          <div class="lib-sub">
+            <span id="lib-lbl">—</span>
+            <span class="lib-stat-pill" id="lib-count-pill">0 pistes</span>
+          </div>
+        </div>
+        <div class="lib-import-row">
+          <button class="lib-btn-cloud" onclick="openCloudModal()">☁️ Via lien</button>
+          <button class="lib-btn-local" onclick="document.getElementById('au-inp').click()">+ Importer</button>
+          <input type="file" id="au-inp" accept="audio/*" multiple style="display:none" onchange="handleFiles(this.files)"/>
         </div>
       </div>
 
-      <!-- FILTER TABS -->
-      <div class="ctabs" id="lib-cats">
-        <button class="ctab active" data-cat="all">Tout</button>
-        <button class="ctab" data-cat="music">Musique</button>
-        <button class="ctab" data-cat="voice">Voix</button>
-        <button class="ctab" data-cat="creation">Créations</button>
-        <button class="ctab" data-cat="cloud">☁️ Cloud</button>
-        <button class="ctab" data-cat="other">Autre</button>
+      <!-- SEARCH -->
+      <div class="lib-search">
+        <span class="si">🔍</span>
+        <input type="text" placeholder="Titre, artiste, album..." oninput="doSearch(this.value)"/>
       </div>
+
+      <!-- FILTER STATS BAR -->
+      <div class="lib-stats-bar" id="lib-stats-bar">
+        <div class="lib-stat active" data-cat="all" onclick="setLibCat('all',this)">
+          Tout <span class="lib-stat-count" id="sc-all">0</span>
+        </div>
+        <div class="lib-stat" data-cat="music" onclick="setLibCat('music',this)">
+          🎵 Musique <span class="lib-stat-count" id="sc-music">0</span>
+        </div>
+        <div class="lib-stat" data-cat="voice" onclick="setLibCat('voice',this)">
+          🎙️ Voix <span class="lib-stat-count" id="sc-voice">0</span>
+        </div>
+        <div class="lib-stat" data-cat="creation" onclick="setLibCat('creation',this)">
+          ✨ Créations <span class="lib-stat-count" id="sc-crea">0</span>
+        </div>
+        <div class="lib-stat" data-cat="cloud" onclick="setLibCat('cloud',this)">
+          ☁️ Cloud <span class="lib-stat-count" id="sc-cloud">0</span>
+        </div>
+        <div class="lib-stat" data-cat="other" onclick="setLibCat('other',this)">
+          📁 Autre
+        </div>
+      </div>
+
+      <!-- DROP ZONE — compact -->
+      <div class="lib-drop" id="uzone">
+        <input type="file" accept="audio/*" multiple onchange="handleFiles(this.files)"/>
+        <div class="lib-drop-ic">🏠</div>
+        <div class="lib-drop-txt">
+          <h4>Importer depuis cet appareil</h4>
+          <p>MP3, WAV, OGG, FLAC · Glissez ou cliquez · Stocké en local</p>
+          <div class="up-prog" id="up-prog"><div class="up-bw"><div class="up-bf" id="up-bf"></div></div><div class="up-lbl" id="up-lbl"></div></div>
+        </div>
+        <div class="lib-drop-arrow">→</div>
+      </div>
+
+      <!-- CLOUD BANNER -->
+      <div class="lib-cloud-banner" onclick="openCloudModal()">
+        <div class="lib-cloud-banner-ic">☁️</div>
+        <div class="lib-cloud-banner-txt">
+          <h4>Ajouter via lien Cloudinary</h4>
+          <p>Collez un lien audio — visible sur tous vos appareils via Firebase</p>
+        </div>
+        <div class="lib-cloud-badge">🌍 Visible partout</div>
+      </div>
+
+      <!-- SECTION TITLE -->
+      <div class="lib-section-title" id="lib-section-label">Ma musique</div>
+
+      <!-- CARDS GRID -->
       <div class="cards" id="lib-grid"></div>
+
     </div>
 
 
@@ -761,7 +1052,18 @@ html,body{height:100%;font-family:var(--font-b);background:var(--bg);color:var(-
 
     <!-- CREATIONS -->
     <div class="page" id="page-creations">
-      <div class="ph"><div><div class="pt">Créations</div><div class="ps">Vos enregistrements</div></div></div>
+      <div class="crea-header">
+        <div>
+          <div class="crea-title">Mes Créations</div>
+          <div class="crea-sub">Enregistrements Studio · Gérez la visibilité de chaque création</div>
+        </div>
+      </div>
+      <!-- Public/Private filter -->
+      <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
+        <div class="lib-stat active" onclick="setCreaFilter('all',this)" style="cursor:pointer">Tout</div>
+        <div class="lib-stat" onclick="setCreaFilter('public',this)" style="cursor:pointer">🌍 Partagées</div>
+        <div class="lib-stat" onclick="setCreaFilter('private',this)" style="cursor:pointer">🔒 Privées</div>
+      </div>
       <div class="cards" id="crea-grid"></div>
     </div>
 
@@ -973,9 +1275,41 @@ html,body{height:100%;font-family:var(--font-b);background:var(--bg);color:var(-
       <div class="fg" style="margin:0"><label>Artiste</label><input type="text" id="sm-artist" placeholder="Mon pseudo..."/></div>
     </div>
     <div style="height:12px"></div>
+    <!-- Visibilité toggle -->
+    <div id="vis-box" style="border-radius:12px;padding:14px;margin-bottom:14px;border:1.5px solid rgba(255,107,138,.25);background:rgba(255,107,138,.05);transition:all .3s">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span id="sm-vis-icon" style="font-size:24px">🔒</span>
+          <div>
+            <div id="sm-vis-label" style="font-size:13.5px;font-weight:700;color:var(--tx)">Privé</div>
+            <div id="sm-vis-desc" style="font-size:11.5px;color:var(--tx3);margin-top:2px">Visible uniquement par toi</div>
+          </div>
+        </div>
+        <!-- Toggle switch -->
+        <div id="sm-vis-toggle" onclick="toggleSavePublic()" style="width:56px;height:30px;border-radius:15px;background:var(--sf2);border:1px solid var(--bd2);position:relative;cursor:pointer;transition:all .3s;flex-shrink:0">
+          <div id="sm-vis-thumb" style="position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;top:3px;left:3px;transition:all .3s;box-shadow:0 2px 6px rgba(0,0,0,.4)"></div>
+        </div>
+      </div>
+      <input type="checkbox" id="sm-public" style="display:none"/>
+    </div>
+
     <div class="fg"><label>Image (optionnel)</label>
       <div class="cdrop"><input type="file" accept="image/*" id="sm-c-inp" onchange="prevCov(this,'sm-prev','sm-ph')"/>
         <img id="sm-prev" src=""/><div id="sm-ph"><div style="font-size:22px;margin-bottom:5px">🖼️</div><div style="font-size:12px;color:var(--tx3)">Optionnel</div></div></div>
+    </div>
+    <!-- PUBLIC TOGGLE -->
+    <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg3);border-radius:12px;padding:14px 16px;margin-top:4px;border:1px solid var(--bd)">
+      <div>
+        <div style="font-size:13.5px;font-weight:600;color:var(--tx)">🌍 Partager avec tous</div>
+        <div style="font-size:11.5px;color:var(--tx3);margin-top:3px">Visible par tous les utilisateurs via Firebase</div>
+      </div>
+      <label class="pub-tog">
+        <input type="checkbox" id="sm-public"/>
+        <div class="pub-tog-slider"></div>
+      </label>
+    </div>
+    <div id="sm-public-info" style="display:none;margin-top:8px;padding:10px 14px;background:rgba(107,255,200,.07);border:1px solid rgba(107,255,200,.15);border-radius:10px;font-size:12px;color:var(--ok)">
+      🌍 Cette création sera visible par tous les appareils connectés à Beyma Flow
     </div>
     <div class="mf"><button class="btnc" onclick="closeModal('save-modal')">Annuler</button><button class="btno" id="sm-btn" onclick="confirmSave()">💾 Sauvegarder</button></div>
   </div>
@@ -1066,7 +1400,6 @@ let isDark=true,colorTheme='cosmos',activeFX='none';
 let libCat='all',searchQ='';
 let playStats={},totalTime=0,weekAct=[0,0,0,0,0,0,0];
 let pwaPrompt=null,recAF=null,shuffleOn=false,loopFPOn=false;
-let mixTracks=[],mixNodes=[],mixCtx2=null,mixPlaying=false,mpCat='all';
 let _sleepIv=null,_sleepSecs=0;
 let fbDB=null,fbSyncOn=true,fbRefs={};
 
@@ -1074,7 +1407,6 @@ const USERS={user1:{name:'Utilisateur 1',avClass:'u1',icon:'👑'},user2:{name:'
 const FB_CFG={apiKey:"AIzaSyDBFkMliveBZdXX7ce24SmsB0h1QqdYHGk",authDomain:"beyma-flow.firebaseapp.com",databaseURL:"https://beyma-flow-default-rtdb.firebaseio.com",projectId:"beyma-flow",storageBucket:"beyma-flow.firebasestorage.app",messagingSenderId:"812703479592",appId:"1:812703479592:web:3413493def8139ca1a821d"};
 const CAT_ICON={music:'🎵',voice:'🎙️',creation:'✨',cloud:'☁️',other:'📁'};
 const CAT_LBL={music:'Musique',voice:'Voix',creation:'Création',cloud:'Cloud',other:'Autre'};
-const MIX_COLORS=['#7c6dfa','#3fa9d4','#5dbe7a','#c8944a','#ff6b8a','#6bffc8','#f0a050','#a060e0'];
 function ci(c){return CAT_ICON[c]||'📁'}
 function cl(c){return CAT_LBL[c]||c}
 
@@ -1250,10 +1582,26 @@ function goPage(page){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 document.querySelectorAll('.sbb[data-page],.bnb[data-page]').forEach(b=>b.onclick=()=>goPage(b.dataset.page));
-document.getElementById('lib-cats').addEventListener('click',e=>{
-  const t=e.target.closest('.ctab');if(!t)return;
-  libCat=t.dataset.cat;document.querySelectorAll('#lib-cats .ctab').forEach(x=>x.classList.remove('active'));t.classList.add('active');renderLib();
-});
+function setLibCat(cat, el) {
+  libCat = cat;
+  document.querySelectorAll('#lib-stats-bar .lib-stat').forEach(x => x.classList.remove('active'));
+  if(el) el.classList.add('active');
+  renderLib();
+}
+function updateLibStats() {
+  const all = myTracks.length;
+  const music = myTracks.filter(t=>t.category==='music').length;
+  const voice = myTracks.filter(t=>t.category==='voice').length;
+  const crea = myTracks.filter(t=>t.category==='creation').length;
+  const cloud = myTracks.filter(t=>t.isCloud).length;
+  const setEl = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+  setEl('sc-all',all); setEl('sc-music',music); setEl('sc-voice',voice);
+  setEl('sc-crea',crea); setEl('sc-cloud',cloud);
+  const pill = document.getElementById('lib-count-pill');
+  if(pill) pill.textContent = all + ' piste' + (all>1?'s':'');
+  const titleEl = document.getElementById('lib-title-txt');
+  if(titleEl && currentUser) titleEl.textContent = 'Bibliothèque';
+}
 
 // ═══════════ IMPORT LOCAL ═══════════
 const uz=document.getElementById('uzone');
@@ -1347,6 +1695,42 @@ async function getCloudCoverData() {
   }
 }
 
+function toggleSavePublic() {
+  const cb = document.getElementById('sm-public');
+  const box = document.getElementById('vis-box');
+  const toggle = document.getElementById('sm-vis-toggle');
+  const thumb = document.getElementById('sm-vis-thumb');
+  const icon = document.getElementById('sm-vis-icon');
+  const lbl = document.getElementById('sm-vis-label');
+  const desc = document.getElementById('sm-vis-desc');
+
+  cb.checked = !cb.checked;
+
+  if (cb.checked) {
+    // PUBLIC
+    box.style.borderColor = 'rgba(107,255,200,.35)';
+    box.style.background = 'rgba(107,255,200,.06)';
+    toggle.style.background = 'var(--ok)';
+    toggle.style.borderColor = 'var(--ok)';
+    thumb.style.transform = 'translateX(26px)';
+    icon.textContent = '🌍';
+    lbl.textContent = 'Public';
+    desc.textContent = 'Visible et écoutée par tous les utilisateurs';
+    desc.style.color = 'var(--ok)';
+  } else {
+    // PRIVÉ
+    box.style.borderColor = 'rgba(255,107,138,.25)';
+    box.style.background = 'rgba(255,107,138,.05)';
+    toggle.style.background = 'var(--sf2)';
+    toggle.style.borderColor = 'var(--bd2)';
+    thumb.style.transform = 'translateX(0)';
+    icon.textContent = '🔒';
+    lbl.textContent = 'Privé';
+    desc.textContent = 'Visible uniquement par toi';
+    desc.style.color = 'var(--tx3)';
+  }
+}
+
 async function saveCloudTrack(){
   const url=document.getElementById('cl-url').value.trim();
   const name=document.getElementById('cl-nm').value.trim();
@@ -1411,26 +1795,52 @@ function hideUp(){document.getElementById('up-prog').style.display='none';}
 
 // ═══════════ RENDER CARDS ═══════════
 function cardHTML(t){
-  const isFav=favorites.has(t.id||t.fbKey);
-  const isPlaying=curTrack&&(curTrack.id===t.id||(t.fbKey&&curTrack.fbKey===t.fbKey));
-  const cov=t.coverData?`<img src="${t.coverData}" loading="lazy"/>`:t.coverUrl?`<img src="${t.coverUrl}" loading="lazy"/>`:`<div class="acard-ph">${ci(t.category)}</div>`;
-  const idStr=t.isCloud?`'${t.fbKey}'`:t.id;
-  const delCall=t.isCloud?`delTrack(null,'${t.fbKey}')`:`delTrack(${t.id},null)`;
-  const playCall=t.isCloud?`playCloudTrack('${t.fbKey}')`:`playTrack(${t.id})`;
-  const favId=t.isCloud?`'${t.fbKey}'`:t.id;
-  return`<div class="acard${isPlaying?' playing':''}" id="card-${t.id||t.fbKey}">
-    <div class="acard-cov">${cov}<div class="acard-ov" onclick="${playCall}"><div class="acard-play">▶</div></div></div>
+  const isFav = favorites.has(t.id||t.fbKey);
+  const isPlaying = curTrack && (curTrack.id===t.id || (t.fbKey && curTrack.fbKey===t.fbKey));
+  const cov = t.coverData ? `<img src="${t.coverData}" loading="lazy"/>` : t.coverUrl ? `<img src="${t.coverUrl}" loading="lazy"/>` : `<div class="acard-ph">${ci(t.category)}</div>`;
+  const delCall = t.isCloud ? `delTrack(null,'${t.fbKey}')` : `delTrack(${t.id},null)`;
+  const playCall = t.isCloud ? `playCloudTrack('${t.fbKey}')` : `playTrack(${t.id})`;
+  const favId = t.isCloud ? `'${t.fbKey}'` : t.id;
+  const trackId = t.id||t.fbKey;
+  const isCreation = t.category === 'creation';
+
+  // Source badge
+  const srcBadge = t.isCloud
+    ? `<span class="card-src cloud">☁️ Cloud</span>`
+    : isCreation
+      ? `<span class="card-src creation">✨ Création</span>`
+      : `<span class="card-src local">🏠 Local</span>`;
+
+  // Public/Private toggle for creations — BIG and prominent
+  const publicToggle = isCreation ? `
+    <div class="card-visibility-toggle ${t.isPublic ? 'is-public' : 'is-private'}"
+      onclick="event.stopPropagation();toggleCreationPublic('${trackId}')"
+      title="${t.isPublic ? 'Visible par tous — cliquer pour passer en privé' : 'Privé — cliquer pour partager avec tous'}">
+      <span class="vis-icon">${t.isPublic ? '🌍' : '🔒'}</span>
+      <span class="vis-label">${t.isPublic ? 'Public' : 'Privé'}</span>
+      <span class="vis-arrow">${t.isPublic ? 'Passer en privé' : 'Partager'}</span>
+    </div>` : '';
+
+  return `<div class="acard${isPlaying ? ' playing' : ''}" id="card-${trackId}">
+    <div class="acard-cov">
+      ${cov}
+      <div class="acard-ov" onclick="${playCall}">
+        <div class="acard-play">${isPlaying && curTrack && !cur?.paused ? '⏸' : '▶'}</div>
+      </div>
+    </div>
     <div class="acard-tbns">
-      <button class="acb${isFav?' fav-on':''}" onclick="event.stopPropagation();toggleFav(${favId})">${isFav?'★':'☆'}</button>
+      <button class="acb${isFav ? ' fav-on' : ''}" onclick="event.stopPropagation();toggleFav(${favId})">${isFav ? '★' : '☆'}</button>
       <button class="acb" onclick="event.stopPropagation();${delCall}" style="color:var(--dn)">🗑</button>
     </div>
     <div class="acard-info" onclick="${playCall}">
       <h4>${t.name}</h4>
-      ${t.artist?`<div class="card-artist">${t.artist}</div>`:''}
-      <div class="card-cat">${cl(t.category)}</div>
-      ${t.isCloud?`<div class="card-src">☁️ Cloud · Tous appareils</div>`:'<div class="card-src">🏠 Local</div>'}
-      ${isPlaying?`<div class="pbars">${[...Array(5)].map((_,i)=>`<div class="pbar" style="--d:${.4+i*.1}s"></div>`).join('')}</div>`:''}
+      ${t.artist ? `<div class="card-artist">${t.artist}</div>` : ''}
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+        ${srcBadge}
+        ${isPlaying ? `<div class="pbars">${[...Array(4)].map((_,i) => `<div class="pbar" style="--d:${.35+i*.1}s"></div>`).join('')}</div>` : ''}
+      </div>
     </div>
+    ${publicToggle}
   </div>`;
 }
 function renderLib(q=''){
@@ -1439,6 +1849,7 @@ function renderLib(q=''){
   if(libCat!=='all')items=items.filter(t=>t.category===libCat||(libCat==='cloud'&&t.isCloud));
   const sq=q||searchQ;
   if(sq)items=items.filter(t=>(t.name+' '+(t.artist||'')).toLowerCase().includes(sq.toLowerCase()));
+  updateLibStats();
   if(!items.length){g.innerHTML=`<div class="empty"><div class="ei">🎵</div><h3>Bibliothèque vide</h3><p>Importez un fichier local ou ajoutez un lien Cloudinary</p></div>`;return;}
   g.innerHTML=items.map(t=>cardHTML(t)).join('');
 }
@@ -1450,13 +1861,49 @@ function renderFavs(){
 }
 function renderCreations(){
   const g=document.getElementById('crea-grid');
-  if(!myCreations.length){g.innerHTML=`<div class="empty"><div class="ei">✨</div><h3>Aucune création</h3><p>Enregistrez dans le Studio</p></div>`;return;}
-  g.innerHTML=myCreations.map(t=>cardHTML(t)).join('');
+
+  if(!myCreations.length){
+    g.innerHTML='<div class="empty"><div class="ei">✨</div><h3>Aucune création</h3><p>Enregistrez dans le Studio</p></div>';
+    return;
+  }
+
+  // Filter mode
+  if(creaFilter === 'public'){
+    const items = myCreations.filter(t=>t.isPublic);
+    if(!items.length){g.innerHTML='<div class="empty"><div class="ei">🌍</div><h3>Aucune création partagée</h3><p>Activez le partage sur une création</p></div>';return;}
+    g.innerHTML='<div class="crea-section-title" style="color:var(--ok)">🌍 Partagées <span class="crea-count">'+items.length+'</span></div><div class="cards">'+items.map(t=>cardHTML(t)).join('')+'</div>';
+    return;
+  }
+
+  if(creaFilter === 'private'){
+    const items = myCreations.filter(t=>!t.isPublic);
+    if(!items.length){g.innerHTML='<div class="empty"><div class="ei">🔒</div><h3>Aucune création privée</h3><p>Toutes vos créations sont publiques</p></div>';return;}
+    g.innerHTML='<div class="crea-section-title" style="color:var(--tx2)">🔒 Privées <span class="crea-count">'+items.length+'</span></div><div class="cards">'+items.map(t=>cardHTML(t)).join('')+'</div>';
+    return;
+  }
+
+  // Mode "Tout" — séparé en 2 sections
+  const pub  = myCreations.filter(t=>t.isPublic);
+  const priv = myCreations.filter(t=>!t.isPublic);
+  let html = '';
+
+  if(pub.length){
+    html += '<div class="crea-section-title" style="color:var(--ok)">🌍 Partagées <span class="crea-count">'+pub.length+'</span></div>';
+    html += '<div class="cards" style="margin-bottom:28px">'+pub.map(t=>cardHTML(t)).join('')+'</div>';
+  }
+
+  if(priv.length){
+    html += '<div class="crea-section-title" style="color:var(--tx2)">🔒 Privées <span class="crea-count">'+priv.length+'</span></div>';
+    html += '<div class="cards">'+priv.map(t=>cardHTML(t)).join('')+'</div>';
+  }
+
+  g.innerHTML = html;
 }
 function updateBadges(){
   document.getElementById('bdg-lib').textContent=myTracks.length;
   document.getElementById('bdg-fav').textContent=favorites.size;
   document.getElementById('bdg-crea').textContent=myCreations.length;
+  updateLibStats();
 }
 function doSearch(q){searchQ=q;renderLib(q);}
 
@@ -1650,20 +2097,44 @@ async function startRec(){
 function stopRec(){if(mediaRec)mediaRec.stop();clearInterval(recTmr);isRec=false;document.getElementById('rbtn').classList.remove('rec');document.getElementById('rbtn').textContent='🎙️';}
 function prevRec(){if(!pendingBlob)return;new Audio(URL.createObjectURL(pendingBlob)).play();}
 function expRec(){if(!pendingBlob)return;const u=URL.createObjectURL(pendingBlob);const a=document.createElement('a');a.href=u;a.download='beymaflow-'+Date.now()+'.webm';a.click();URL.revokeObjectURL(u);toast('Exporté','ok');}
-function openSaveMod(){document.getElementById('sm-nm').value='Création '+new Date().toLocaleDateString('fr');document.getElementById('sm-artist').value=USERS[currentUser].name;openModal('save-modal');}
+function openSaveMod(){
+  document.getElementById('sm-nm').value = 'Création ' + new Date().toLocaleDateString('fr');
+  document.getElementById('sm-artist').value = USERS[currentUser]?.name || '';
+  // Reset visibility to private
+  const cb = document.getElementById('sm-public');
+  if (cb && cb.checked) toggleSavePublic();
+  openModal('save-modal');
+}
 async function confirmSave(){
   if(!pendingBlob)return;
   const btn=document.getElementById('sm-btn');btn.disabled=true;btn.textContent='Sauvegarde...';
   let coverData=null;const cFile=document.getElementById('sm-c-inp').files[0];
   if(cFile){coverData=await new Promise(res=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.readAsDataURL(cFile);});}
+  const isPublic = document.getElementById('sm-public').checked;
   const reader=new FileReader();
   reader.onload=async e=>{
-    const track={name:document.getElementById('sm-nm').value||'Ma création',artist:document.getElementById('sm-artist').value||'',category:'creation',audioData:e.target.result,coverData:coverData,isCloud:false,addedAt:Date.now()};
-    await dbAdd(track);myTracks=await dbGetAll();myCreations=myTracks.filter(t=>t.category==='creation');
+    const track={name:document.getElementById('sm-nm').value||'Ma création',artist:document.getElementById('sm-artist').value||'',category:'creation',audioData:e.target.result,coverData:coverData,isCloud:false,isPublic:isPublic,addedAt:Date.now()};
+    const newId = await dbAdd(track); track.id = newId;
+    // If public → push to Firebase so everyone sees it
+    if(isPublic && fbDB && fbSyncOn){
+      try{
+        await fbDB.ref('public_creations/'+newId).set({
+          name:track.name,artist:track.artist,category:'creation',
+          audioData:e.target.result, coverData:coverData||null,
+          isPublic:true,addedBy:currentUser,
+          userName:USERS[currentUser]?.name||currentUser,
+          addedAt:track.addedAt
+        });
+      }catch(err){console.warn('Firebase push creation err:',err);}
+    }
+    myTracks=await dbGetAll();myCreations=myTracks.filter(t=>t.category==='creation');
     btn.disabled=false;btn.textContent='💾 Sauvegarder';
     closeModal('save-modal');resetCov('sm-prev','sm-ph');pendingBlob=null;
+    document.getElementById('sm-public').checked=false;
+    document.getElementById('sm-public-info').style.display='none';
     document.getElementById('rac').style.display='none';document.getElementById('rt').textContent='00:00';document.getElementById('rs').textContent='Prêt à enregistrer';
-    updateBadges();renderCreations();renderLib();toast('Création sauvegardée','ok');
+    updateBadges();renderCreations();renderLib();
+    toast(isPublic?'Création partagée avec tous 🌍':'Création sauvegardée 🔒','ok');
   };
   reader.readAsDataURL(pendingBlob);
 }
@@ -1683,10 +2154,11 @@ function renderMixTracks(){
 // ═══════════════════════════════════════════════════
 // MIX STUDIO — CapCut style
 // ═══════════════════════════════════════════════════
-mixTracks = [];        // {id, name, artist, category, audioData, audioUrl, coverData, coverUrl, isCloud, isAmb, ambId, vol, startSec, durationSec, color, mixId}
-mixPlaying = false;
+const MIX_COLORS = ['#7c6dfa','#3fa9d4','#5dbe7a','#c8944a','#ff6b8a','#6bffc8','#f0a050','#a060e0'];
+let mixTracks = [];        // {id, name, artist, category, audioData, audioUrl, coverData, coverUrl, isCloud, isAmb, ambId, vol, startSec, durationSec, color, mixId}
+let mixPlaying = false;
 let mixAudioNodes = [];    // {audio, gainNode, timer}
-mixCtx2 = null;
+let mixCtx2 = null;
 let mixMasterGain = null;
 let mixCursorPos = 0;      // seconds
 let mixCursorAF = null;
@@ -2389,7 +2861,7 @@ async function openAlbum(albumId, albumName, artistName) {
     document.getElementById('jm-artist-header').innerHTML = `
       <div style="font-family:var(--font-d);font-size:22px;font-weight:300">💿 ${albumName}</div>
       <div style="font-size:13px;color:var(--tx3);margin-top:4px">${artistName} · ${data.results ? data.results.length+' titres' : ''}</div>`;
-    document.getElementById('jm-artist-tracks-title').textContent = 'Titres de l\'album';
+    document.getElementById('jm-artist-tracks-title').textContent = "Titres de l'album";
     const tracksEl = document.getElementById('jm-artist-tracks');
     if(data.results && data.results.length) {
       tracksEl.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px">${data.results.map(t => jmTrackRowHTML(t)).join('')}</div>`;
@@ -2487,6 +2959,77 @@ function showJmStatus(msg) {
   if(s) { s.textContent = msg; s.style.display = 'block'; }
   if(r) r.innerHTML = '';
 }
+
+
+// ═══════════════════════════════════
+// CREATION PUBLIC/PRIVATE TOGGLE
+// ═══════════════════════════════════
+let creaFilter = 'all';
+
+async function toggleCreationPublic(id) {
+  const track = myTracks.find(t => String(t.id) === String(id) || t.fbKey === String(id));
+  if (!track) return;
+  track.isPublic = !track.isPublic;
+
+  // Update IndexedDB
+  if (track.id && DB) {
+    try {
+      const tx = DB.transaction('tracks','readwrite');
+      const store = tx.objectStore('tracks');
+      const req = store.get(track.id);
+      req.onsuccess = () => { const t = req.result; if(t){t.isPublic=track.isPublic;store.put(t);} };
+    } catch(e) { console.warn('DB err:',e); }
+  }
+
+  // Firebase sync
+  if (fbDB && fbSyncOn) {
+    const key = track.id || track.fbKey;
+    try {
+      if (track.isPublic) {
+        await fbDB.ref('public_creations/' + key).set({
+          name: track.name,
+          artist: track.artist || '',
+          category: 'creation',
+          audioData: track.audioData || null,
+          coverData: track.coverData || null,
+          isPublic: true,
+          addedBy: currentUser,
+          userName: USERS[currentUser]?.name || currentUser,
+          addedAt: track.addedAt || Date.now()
+        });
+        toast('🌍 "' + track.name + '" visible par tous !', 'ok');
+      } else {
+        await fbDB.ref('public_creations/' + key).remove();
+        toast('🔒 "' + track.name + '" repassée en privé', 'info');
+      }
+    } catch(e) {
+      console.warn('FB err:',e);
+      toast('Erreur Firebase: ' + e.message, 'err');
+      track.isPublic = !track.isPublic; // rollback
+    }
+  } else {
+    toast(track.isPublic ? '🌍 Public (sync au prochain démarrage)' : '🔒 Privé', 'info');
+  }
+  renderCreations(); renderLib();
+}
+
+function setCreaFilter(filter, el) {
+  creaFilter = filter;
+  document.querySelectorAll('#page-creations .lib-stat').forEach(x => x.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderCreations();
+}
+
+// Show/hide public info text in save modal
+document.addEventListener('DOMContentLoaded', () => {
+  const pubChk = document.getElementById('sm-public');
+  const pubInfo = document.getElementById('sm-public-info');
+  if (pubChk && pubInfo) {
+    pubChk.addEventListener('change', () => {
+      pubInfo.style.display = pubChk.checked ? 'block' : 'none';
+    });
+  }
+});
 
 // ═══════════ BOOT ═══════════
 (async()=>{
